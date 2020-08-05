@@ -43,6 +43,9 @@ plugins=(
   history
   kubectl
   virtualenv
+  autojump
+  zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -67,3 +70,60 @@ source "${ZSH}/oh-my-zsh.sh"
 # for item in $(ls -1 ${HOME}/.profile.d/*.plugin.zsh); do
 #   [ -e "${item}" ] && source "${item}"
 # done
+
+
+#Kubernetes Context Toogle Prompt
+function kube-toggle() {
+  if (( ${+POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND} )); then
+    unset POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND
+  else
+    POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl|kogito'
+  fi
+  p10k reload
+  if zle; then
+    zle push-input
+    zle accept-line
+  fi
+}
+
+zle -N kube-toggle
+bindkey '^]' kube-toggle  # ctrl-] to toggle kubecontext in powerlevel10k prompt
+
+#source /Users/sam/.oh-my-zsh/themes/powerlevel10k/config/p10k-robbyrussell.zsh
+
+
+zshaddhistory() {
+    local line=${1%%$'\n'}
+    local cmd=${line%% *}
+    # Only those that satisfy all of the following conditions are added to the history
+    [[ ${#line} -ge 5
+       && ${cmd} != ll
+       && ${cmd} != ls
+       && ${cmd} != la
+       && ${cmd} != cd
+       && ${cmd} != man
+       && ${cmd} != scp
+       && ${cmd} != vim
+       && ${cmd} != nvim
+       && ${cmd} != less
+       && ${cmd} != ping
+       && ${cmd} != open
+       && ${cmd} != file
+       && ${cmd} != which
+       && ${cmd} != whois
+       && ${cmd} != drill
+       && ${cmd} != uname
+       && ${cmd} != md5sum
+       && ${cmd} != pacman
+       && ${cmd} != xdg-open
+       && ${cmd} != traceroute
+       && ${cmd} != speedtest-cli
+    ]]
+}
+
+alias classis="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-classic.zsh"
+alias pure="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-pure.zsh"
+alias rainbow="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-rainbow.zsh"
+alias robby="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/10k-robbyrussell.zsh"
+alias lean8="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-lean-8colors.zsh"
+alias lean="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-lean.zsh"
