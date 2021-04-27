@@ -1,0 +1,14 @@
+# View Enabled Admission Controllers
+
+$ kube-apiserver -h | grep enable-admission-plugins
+
+
+# View Enabled Admission controller in Kubernetes
+
+$ kubectl exec -it kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep 'enable-admission-plugins'
+
+# Create Secret with tls
+$ kubectl create secret tls webhook-server-tls \
+  --cert=/root/keys/webhook-server-tls.crt \
+  --key=/root/keys/webhook-server-tls.key -n webhook-demo
+

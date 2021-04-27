@@ -1,0 +1,7 @@
+# Static Analysis of User Workloads by Kubesec
+
+$ kubesec scan pod.yaml   # Kubesec installed locally (local binary)
+
+$ curl -sSX POST --data-binary @"pod.yaml" https://v2.kubesec.io/scan  # Scan using hosted Kubesec
+
+$ kubesec http 8080 &      # Server kubesec server on local host

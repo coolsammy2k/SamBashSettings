@@ -1,0 +1,24 @@
+
+
+$ trivy image httpd
+
+$ trivy image --severity CRITICAL nginx:1.18.0
+
+$ trivy image --severity CRITICAL,HIGH nginx:1.180.0
+
+$ trivy image --ignore-unfixed nginx:1.18.0
+
+$ docker save nginx:1.18.0 > nginx.tar
+
+$ trivy image --input archive.tar
+
+
+$ trivy image --severity HIGH --output /root/python.txt python:3.10.0a4-alpine
+$ trivy image --input alpine.tar --format json --output /root/alpine.json
+$ trivy image --severity HIGH,CRITICAL kodekloud/webapp-delayed-start
+
+#Get all the images of pods running in the 'delta' namespace:
+$ kubectl -n delta get pods -o json | jq -r '.items[].spec.containers[].image'
+
+
+# CVE : Common Vulnerabilities and Exposures 

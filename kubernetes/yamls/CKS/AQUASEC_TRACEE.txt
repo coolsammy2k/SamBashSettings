@@ -1,0 +1,22 @@
+EBPF : Extended Berkely Packet Filter
+
+
+ /tmp/tracee  => Default Workspace
+ /lib/modules => Kernel Headers
+ /usr/src     => Dependency needed to run tracee
+
+
+# Traching Syscalls
+ $ docker run --name tracee --rm --privileged --pid=host \
+          -v /lib/modules/:/lib/modules/:ro -v /usr/src:/usr/src:ro \
+          -v /tmp/tracee:/tmp/tracee aquasec/tracee:0.4.0 --trace comm=ls
+
+
+$ sudo docker run --name tracee --rm --privileged --pid=host \
+          -v /lib/modules/:/lib/modules/:ro -v /usr/src:/usr/src:ro \
+          -v /tmp/tracee:/tmp/tracee aquasec/tracee:0.4.0 --trace pid=new
+
+
+$ sudo docker run --name tracee --rm --privileged --pid=host \
+          -v /lib/modules/:/lib/modules/:ro -v /usr/src:/usr/src:ro \
+          -v /tmp/tracee:/tmp/tracee aquasec/tracee:0.4.0 --trace container=new

@@ -1,0 +1,13 @@
+
+$ which strace
+
+
+$ strace touch /tmp/error.log
+
+
+$ pidof etcd
+
+$ strace -p $(pidof etcd)
+
+
+

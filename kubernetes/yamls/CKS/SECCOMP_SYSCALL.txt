@@ -1,0 +1,17 @@
+SECCOMP: Secure Computing
+
+# Restricting SYSCALLS
+
+$ grep -i seccomp /boot/config-$(uname -r)
+
+$ docker run docker/whalesay cowsay hello!
+
+$ docker run -it --rm --security-opt seccomp=unconfined docker/whalesay /bin/sh
+
+# SECCOMP in Kubernetes
+
+$ kubectl run amicontained --image r.j3ss.co/amicontained amicontained -- amicontained
+
+$ kubectl logs amicontained
+
+
