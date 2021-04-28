@@ -1,12 +1,19 @@
 ### setup terminal
-apt-get install -y bash-completion binutils
-echo 'colorscheme ron' >> ~/.vimrc
-echo 'set tabstop=2' >> ~/.vimrc
-echo 'set shiftwidth=2' >> ~/.vimrc
-echo 'set expandtab' >> ~/.vimrc
+#apt-get install -y bash-completion binutils
 echo 'source <(kubectl completion bash)' >> ~/.bashrc
 echo 'alias k=kubectl' >> ~/.bashrc
 echo 'alias c=clear' >> ~/.bashrc
 echo 'complete -F __start_kubectl k' >> ~/.bashrc
 sed -i '1s/^/force_color_prompt=yes\n/' ~/.bashrc
+
+#Setup VI for YAML
+echo 'au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml #foldmethod=indent' >> ~/.vimrc
+echo 'autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab' >> ~/.vimrc
+echo 'let g:indentLine_char_list = ['⦙','|', '¦', '┆', '┊']' >>  ~/.vimrc
+echo 'colorscheme ron' >> ~/.vimrc
+
+#Install Vim indentLine plugin
+git clone https://github.com/Yggdroot/indentLine.git ~/.vim/pack/vendor/start/indentLine
+vim -u NONE -c "helptags  ~/.vim/pack/vendor/start/indentLine/doc" -c "q"
+
 source ~/.bashrc
