@@ -48,7 +48,7 @@ https://kubernetes.io/docs/tutorials/clusters/apparmor/#setting-up-nodes-with-pr
 	2. AppArmor kernel module is enabled. To check whether the module is enabled, check the /sys/module/apparmor/parameters/enabled file:
 	
 	cat /sys/module/apparmor/parameters/enabled
-Y
+        Y
 
 
 	3. Profile is loaded -- AppArmor is applied to a Pod by specifying an AppArmor profile that each container should be run with. You can view which profiles are loaded on a node by checking the /sys/kernel/security/apparmor/profiles file. For example:
@@ -58,7 +58,7 @@ Y
            kubectl get nodes -o=jsonpath=$'{range .items[*]}{@.metadata.name}: {.status.conditions[?(@.reason=="KubeletReady")].message}\n{end}'
 
 	5. You can also verify directly that the container's root process is running with the correct profile by checking its proc attr:
-kubectl exec <pod_name> cat /proc/1/attr/current
+       kubectl exec <pod_name> cat /proc/1/attr/current
 
 Restrict a Container's Syscalls with Seccomp
 https://kubernetes.io/docs/tutorials/clusters/seccomp/

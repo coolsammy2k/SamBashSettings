@@ -126,4 +126,4 @@ alias pure="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k
 alias rainbow="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-rainbow.zsh"
 alias robby="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/10k-robbyrussell.zsh"
 alias lean8="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-lean-8colors.zsh"
-alias lean="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-lean.zsh"
+alias lean="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-lean.zsh"alias k=kubectl
