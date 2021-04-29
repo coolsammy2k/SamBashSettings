@@ -457,3 +457,7 @@ endif
 if filereadable(expand(custom_configs_path))
   execute "source " . custom_configs_path
 endif
+
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+let g:indentLine_char_list = ['⦙','|', '¦', '┆', '┊']'
+colorscheme ron
