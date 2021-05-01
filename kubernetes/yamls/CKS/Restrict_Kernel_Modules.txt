@@ -1,0 +1,12 @@
+# Restrict Kernel Modules
+
+$ cat /etc/modeprobe.d/blacklist.conf
+  blacklist sctp
+
+
+$ shudown -r now
+
+$ lsmod | grep sctp
+
+
+# (DCC) Datagram Congestion Control Protocol

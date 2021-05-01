@@ -1,0 +1,26 @@
+vi /etc/ssh/sshd_config
+PermitRootLogin no
+PasswordAuthentication no
+
+$ systemctl restart sshd
+
+
+• ssh into node01 host from controlplane host
+$ ssh node01
+
+• Create user jim on node01 host
+
+$ adduser jim #(set any password you like)
+
+• Return back to controlplane host and copy ssh public key
+
+$ ssh-copy-id -i ~/.ssh/id_rsa.pub jim@node01
+
+• Test ssh access from controlplane host
+$ ssh jim@node01
+
+
+• We want to update user jim on node01 host so that jim can run sudo commands without entering the sudo password. Please make appropriate changes.
+• On node01 host, open /etc/sudoers file using any editor like vi and edit entry for user jim and forcefully save the file.
+Change jim ALL=(ALL:ALL) ALL
+To jim ALL=(ALL) NOPASSWD:ALL

@@ -1,0 +1,56 @@
+# Check Service Status
+
+
+$ systemctl start docker
+$ systemctl status docker
+
+# Start Manually
+
+$ dockerd
+
+# Start Manually With Debug
+
+$ dockerd --debug
+
+# Unix Socket   /var/run/docker.sock
+
+$ dockerd --debug \
+          --host=tcp://192.168.1.10:2375
+
+
+# TCP Socket
+
+$ export DOCKER_HOST="tcp://192.168.1.10.2375"
+$ docker ps
+
+# TLS Encryption
+
+$ dockerd --debug \
+          --host=tcp://192.168.1.10:2375 \
+          --tls=true \
+          --tlscert=/var/docker/server.pem \
+          --tlskey=/var/docker/serverkey.pem
+
+# /etc/docker/daemon.json
+
+
+$ dockerd --debug=false
+
+# TLS Authentication
+
+$ docker --tlscert=<> --tlskey=<> --tlscacert=<> ps
+
+/etc/docker/daemon.json
+{
+    "hosts": ["tcp://192.168.1.10:2376"]
+    "tls": true,
+    "tlscert": "/var/docker/server.pem",
+    "tlskey": "/var/docker/serverkey.pem",
+    "tlsverify": true,
+    "tlscacert": "/var/docker/caserver.pem"
+
+}
+
+
+
+
