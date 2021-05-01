@@ -17,3 +17,26 @@ spec:
   - secret
   - emptyDir
   - hostPath
+
+
+---
+
+
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: example1-psp
+spec:
+  privileged: false
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  requiredDropCapabilities:
+  - 'CAP_SYS_BOOT'
+  defaultAddCapabilites:
+  - 'CAP_SYS_TIME'
+  volumes:
+  - 'persistentVolumeClaim'
