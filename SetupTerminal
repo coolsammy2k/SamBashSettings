@@ -16,4 +16,6 @@ echo 'colorscheme ron' >> ~/.vimrc
 git clone https://github.com/Yggdroot/indentLine.git ~/.vim/pack/vendor/start/indentLine
 vim -u NONE -c "helptags  ~/.vim/pack/vendor/start/indentLine/doc" -c "q"
 
+https://github.com/nickjj/dotfiles.git
+
 source ~/.bashrc
