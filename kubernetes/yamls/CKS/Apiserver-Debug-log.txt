@@ -1,0 +1,116 @@
+Crash the Apiserver and check logs
+You should be very comfortable changing the Apiserver config. You will probably mess something up when altering Apiserver config, and this isn’t a bad thing if you know where to check for logs!
+Configure the Apiserver manifest with a new argument --this-is-very-wrong. Check if the Pod comes back up and what logs this causes. Fix the Apiserver again.
+Change the existing Apiserver manifest argument to: —-etcd-servers=this-is-very-wrong. Check what the logs say, and fix it again.
+Change the Apiserver manifest and add invalid YAML. Check what the logs say, and fix again.
+.
+.
+.
+.
+.
+Solution
+
+alias k=kubectl
+
+Log locations to check:
+  /var/log/pods
+  /var/log/containers
+
+docker ps + docker logs
+
+kubelet logs: /var/log/syslog or journalctl -u kubelet
+
+1. Add unknown argument
+  cp /etc/kubernetes/manifests/kube-apiserver.yaml ~/kube-apiserver.yaml.ori # always make a backup !
+  vim /etc/kubernetes/manifests/kube-apiserver.yaml
+
+Edit:
+...
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+    - --this-is-very-wrong
+    - --advertise-address=10.156.0.53
+    - --allow-privileged=true
+...
+
+Wait for it to come back:
+  k -n kube-system get pod # nothing there
+
+Check for logs:
+  cd /var/log/pods
+  ls -lh | grep apiserver
+  tail -f kube-system_kube-apiserver-cks-master_7aef8559c5d7d59259044bb444b01ac3/kube-apiserver/4.log
+
+And we remove the unknown flag to fix the Apiserver again:
+  cp ~/kube-apiserver.yaml.ori /etc/kubernetes/manifests/kube-apiserver.yaml # smart people use a backup
+
+2. Misconfigure ETCD connection
+  cp /etc/kubernetes/manifests/kube-apiserver.yaml ~/kube-apiserver.yaml.ori # always make a backup !
+  vim /etc/kubernetes/manifests/kube-apiserver.yaml
+
+Edit:
+...
+spec:
+  containers:
+  - command:
+    - kube-apiserver
+...
+    - --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt
+    - --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key
+    - --etcd-servers=this-is-very-wrong
+    - --insecure-port=0
+...
+
+The Apiserver needs to communicate with ETCD:
+
+We can see the process running:
+
+We see the container running:
+
+We can check container logs: docker logs 829f1d829a43:
+
+And we fix the Apiserver again:
+  cp ~/kube-apiserver.yaml.ori /etc/kubernetes/manifests/kube-apiserver.yaml # clever people use a backup
+
+3. Invalid Apiserver Manifest YAML
+  This will cause the kubelet not being able to even create a Container. So we cannot check Pod or Container logs.
+  cp /etc/kubernetes/manifests/kube-apiserver.yaml ~/kube-apiserver.yaml.ori # do you do backup?
+  vim /etc/kubernetes/manifests/kube-apiserver.yaml
+
+Edit to invalid YAML:
+
+apiVersion: v1
+kind: Pod
+metadata:
+...
+  name: kube-apiserver
+  namespace: kube-system
+
+spec
+
+THIS IS VERY ::::: WRONG
+  containers:
+  - command:
+    - kube-apiserver
+...
+
+Hello apiserver process?
+  ps aux | grep apiserver # nada
+
+Pod logs?
+  find /var/log/pods/ | grep apiserver # nichts
+
+Container?
+
+  docker ps | grep apiserver # YUdGb1lTRWhJUW89Cg==
+  Kubelet syslog logs (/var/log/syslog)?
+
+Jan  2 18:41:00 cks-controlplane kubelet[7000]: E0102 18:41:00.573469    7000 file.go:187] Can't process manifest file "/etc/kubernetes/manifests/kube-apiserver.yaml": /etc/kubernetes/manifests/kube-apiserver.yaml: couldn't parse as pod(yaml: line 13: mapping values are not allowed in this context), please check config file
+Or also possible:
+
+journalctl -u kubelet | tail
+
+Now fix it again to make the apiserver happy:
+  cp ~/kube-apiserver.yaml.ori /etc/kubernetes/manifests/kube-apiserver.yaml # wise people use a backup

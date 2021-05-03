@@ -1,0 +1,39 @@
+Whitelist Allowed Registries - Image Policy Webhook
+
+
+/etc/kuberenetes/admission-config.yaml
+
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmisionConfiguration
+plugins:
+  - name: ImagePolicyWebhook
+    configuration:
+      imagePolicy:
+        kubeConfigFile: < Path-to-kubeconfig-file>
+        allowTTL:50
+        denlyTTL: 50
+        retryBackoff: 500
+        defaultAllow: true
+
+
+
+<path-to-kubeconfig-file>
+
+clusters:
+  - name: name-of-remote-imagepolicy-service
+    cluster:
+      certificate-authority: /path/to/ca.pem
+      server: https://images.example.com/policy
+
+users:
+  - name: name-of-apiserver
+    user:
+      client-certificate: /path/to/cert.pem
+      client-key: /path/to/key.pem
+
+
+
+Add AdmisionConfiguration to kube-apiserver
+
+--enable-admission-plugins= ImagePolicyWebhook
+--admission-control-config-file=/etc/kubernetes/pki/admission-config.yaml
