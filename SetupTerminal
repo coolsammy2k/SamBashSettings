@@ -16,6 +16,56 @@ echo 'colorscheme ron' >> ~/.vimrc
 git clone https://github.com/Yggdroot/indentLine.git ~/.vim/pack/vendor/start/indentLine
 vim -u NONE -c "helptags  ~/.vim/pack/vendor/start/indentLine/doc" -c "q"
 
+# Enable Leading spaces
+:LeadingSpaceToggle
+
 https://github.com/nickjj/dotfiles.git
 
 source ~/.bashrc
+
+
+#Install Plugin using Package feature of Vim8
+#
+#Nerdtree Plugin
+git clone https://github.com/preservim/nerdtree.git ~/.vim/pack/vendor/start/Nerdtree
+
+#SuperTab
+$ mkdir -p ~/.vim/pack/plugins/start
+     $ git clone --depth=1 git@github.com:ervandew/supertab.git ~/.vim/pack/plugins/start/supertab
+
+#gruvbox plugin
+$ mkdir -p ~/.vim/pack/gruvbox/start/
+git clone https://github.com/morhetz/gruvbox
+
+Via Pack Feature
+
+Create a new directory: $ mkdir -p ~/.vim/pack/colors/opt
+Clone this repository: $ git clone --depth 1 https://github.com/sainnhe/edge.git ~/.vim/pack/colors/opt/edge
+Generate help tags: :helptags ~/.vim/pack/colors/opt/edge/doc/
+Add packadd! edge to your vimrc
+
+
+Via Pack Feature
+
+Create a new directory: $ mkdir -p ~/.vim/pack/colors/opt
+Clone this repository: $ git clone --depth 1 https://github.com/sainnhe/gruvbox-material.git ~/.vim/pack/colors/opt/gruvbox-material
+Generate help tags: :helptags ~/.vim/pack/colors/opt/gruvbox-material/doc/
+Add packadd! gruvbox-material to your vimrc.
+
+
+#Colorschemes: clone it to ~/.vim/colors directory
+git clone https://github.com/flazz/vim-colorschemes ~/.vim/colors/
+
+
+#Indent guides
+$ mkdir -p ~/.vim/pack/indentguide/start
+git clone https://github.com/nathanaelkane/vim-indent-guides
+
+#Vim-airline
+git clone https://github.com/vim-airline/vim-airline ~/.vim/pack/dist/start/vim-airline
+
+# Vim gutter line
+mkdir -p ~/.vim/pack/airblade/start
+cd ~/.vim/pack/airblade/start
+git clone https://github.com/airblade/vim-gitgutter.git
+vim -u NONE -c "helptags vim-gitgutter/doc" -c q
