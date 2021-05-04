@@ -1,0 +1,64 @@
+# AppArmor in Kubernetes
+
+Conditions:
+  1. K8 Version > 1.4
+  2. AppArmor Kernel Module should be enabled on all nodes
+  3. AppArmor profile should be loaded on all the the worker nodes
+  4. Container Runtime should be supported (docker, crio, containerd)
+
+Example: ubuntu-sleeper.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper
+spec:
+  containers:
+  - name: hello
+    image: ubuntu
+    command: [ "sh", "-c", "echo 'Sleeping for an hour!' && sleep 1h" ]
+
+
+# Profile, apparmor-deny-write
+
+profile apparmor-deny-write flags=(attach_disconnected) {
+  file,
+  # Deny all file writes.
+  deny /** w,
+}
+
+# Make sure this above profile is loaded on all the nodes by using the aa-status command
+
+$ aa-status
+
+# Apparmor profiles are applied per container and since this is still in beta, we need
+add this as an annotation to pods metadata 
+
+File: ubuntu-sleeper.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/<container_name> localhost/<profile-name>
+    container.apparmor.security.beta.kubernetes.io/ubuntu-sleeper: localhost/apparmor-deny-write
+
+spec:
+  containers:
+  - name: ubuntu-sleeper
+    image: ubuntu
+    command: [ "sh", "-c", "echo 'Sleeping for an hour!' && sleep 1h" ]
+
+$ kubectl create -f ubuntu-sleeper.yaml
+
+$ kubectl logs ubuntu-sleeper
+  sleeping for an hour!
+
+# Test this profile
+
+$ kubectl exec -it ubuntu-sleeper -- touch /tmp/test
+  touch: cannot touch '/tmp/test' : Permission denied
+  command terminated with exit code 1
+
+

@@ -5,16 +5,49 @@ Y
 
 $ cat /sys/kernel/security/apparmor/profiles
 
-$ aa-status
+
+# Create Custom application specific profiles from scratch
+# As an Example, let's consider a simple bash script which creates directories in a particular directory
+
+add_data.sh
+
+#!/bin/bash
+data_directory=/opt/app/data
+mkdir -p ${data_directory}
+echo "=> File created at `date` " | tee ${data_directory} create.log
+
+
 
 $ apt-get install -y apparmor-utils
 
+# create a profile for the shell script using aa-genprof command
+
 $ aa-genprof /root/add_data.sh
+
+#After completing the questions from above command run aa-status command to check the status of the profile 
+$ aa-status
+
+# The profiles are stored under the directory
+  cat /etc/apparmor.d/root.add_data.sh
+
+
 
 # Load Apparmor Profile
 
+Profiles are configured in three modes
+1. Enforce
+2. Complain
+3. Unconfined
+
+
+# How to work with existing apparmor profile
+# To load a profile run the below command
+
 $ apparmor_parser -q /etc/apparmor.d/usr.sbin.nginx
 
+# To disable the profile
+$ apparmor_parser -R /etc/apparmor.d/root.add_data.sh
+$ ln -s /etc/apparmor.d/root.add_data.sh /etc/apparmor.d/disable/
 
 # AppArmor security profiles for Docker
 
