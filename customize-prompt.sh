@@ -9,5 +9,9 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 
+echo "source <(kubectl completion zsh)" >> ~/.zshrc
+echo 'alias k=kubectl' >> ~/.zshrc
+echo 'complete -F __start_kubectl k' >> ~/.zshrc
+
 
 
