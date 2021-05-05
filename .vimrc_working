@@ -14,7 +14,7 @@ call plug#begin('~/.vim/plugged')   "Installing Vim Plugins
      Plug 'vim-airline/vim-airline' "Setting up my status bar
      Plug 'vim-airline/vim-airline-themes'
      Plug 'airblade/vim-gitgutter' "Shows changes if you're working with git
-     
+     Plug 'scrooloose/nerdtree'     
 
      "Syntax
      Plug 'morhetz/gruvbox'        "Theme
@@ -23,6 +23,8 @@ call plug#begin('~/.vim/plugged')   "Installing Vim Plugins
      Plug 'sainnhe/edge'
 
      Plug 'nathanaelkane/vim-indent-guides'
+     Plug 'yggdroot/indentline'
+
      "SuperTab
      Plug 'ervandew/supertab'
 
@@ -51,6 +53,9 @@ set hls is "Making sure search highlights words as we type them
 set ic
 set laststatus=2 "Setting the size for the command area and airline status bar
 set cmdheight=2
+
+" when scrolling, keep cursor 3 lines away from screen border
+set scrolloff=3
 
 "Key re-maps
 map <C-n> :Lex!<CR>
