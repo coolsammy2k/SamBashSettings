@@ -28,6 +28,10 @@ call plug#begin('~/.vim/plugged')   "Installing Vim Plugins
      "SuperTab
      Plug 'ervandew/supertab'
 
+     "FZF
+     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+     Plug 'junegunn/fzf.vim'
+
 call plug#end()
 
 set encoding=UTF-8
