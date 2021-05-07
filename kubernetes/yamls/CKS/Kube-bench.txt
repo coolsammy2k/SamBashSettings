@@ -1,0 +1,6 @@
+# Run kube bench
+
+
+./kube-bench --config-dir `pwd`/cfg --config `pwd`/cfg/config.yaml 
+
+
