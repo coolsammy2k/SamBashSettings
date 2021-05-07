@@ -1,0 +1,101 @@
+https://sysdig.com/blog/kubernetes-audit-log-falco/
+
+In a Kubernetes cluster, 
+it is the kube-apiserver who performs the auditing. 
+When a request, for example, creates a namespace, it’s sent to the kube-apiserver
+
+Each request can be recorded with an associated stage. The defined stages are:
+
+RequestReceived: The event is generated as soon as the request is received by the audit handler without processing it.
+ResponseStarted: Once the response headers are sent, but before the response body is sent. This stage is only generated for long-running requests (e.g., watch).
+ResponseComplete: The event is generated when a response body is sent.
+Panic: Event is generated when panic occurs.
+
+
+Kubernetes audit policy: An example
+A Kubernetes cluster is full of activity, so it’s not feasible nor practical to record all of it. An audit Policy allows you to filter the events and record only the ones you desire.
+
+With security in mind, we’ll create a policy that filters requests related to pods, kube-proxy, secrets, configurations, and other key components.
+
+Such a policy would look like:
+
+
+apiVersion: audit.k8s.io/v1 # This is required.
+kind: Policy
+# Don't generate audit events for all requests in RequestReceived stage.
+omitStages:
+  - "RequestReceived"
+rules:
+  # Log pod changes at RequestResponse level
+  - level: RequestResponse
+    resources:
+    - group: ""
+      # Resource "pods" doesn't match requests to any subresource of pods,
+      # which is consistent with the RBAC policy.
+      resources: ["pods"]
+  # Only check access to resource "pods"
+  - level: Metadata
+    resources:
+    - group: ""
+      resources: ["pods/log", "pods/status"]
+  # Don't log watch requests by the "system:kube-proxy" on endpoints or services
+  - level: None
+    users: ["system:kube-proxy"]
+    verbs: ["watch"]
+    resources:
+    - group: "" # core API group
+      resources: ["endpoints", "services"]
+  # Don't log authenticated requests to certain non-resource URL paths.
+  - level: None
+    userGroups: ["system:authenticated"]
+    nonResourceURLs:
+    - "/api*" # Wildcard matching.
+    - "/version"
+  # Log the request body of configmap changes in kube-system.
+  - level: Request
+    resources:
+    - group: "" # core API group
+      resources: ["configmaps"]
+    # This rule only applies to resources in the "kube-system" namespace.
+    # The empty string "" can be used to select non-namespaced resources.
+    namespaces: ["kube-system"]
+  # Log configmap and secret changes in all other namespaces at the Metadata level.
+  - level: Metadata
+    resources:
+    - group: "" # core API group
+      resources: ["secrets", "configmaps"]
+  # A catch-all rule to log all other requests at the Metadata level.
+  - level: Metadata
+    # Long-running requests like watches that fall under this rule will not
+    # generate an audit event in RequestReceived.
+    omitStages:
+      - "RequestReceived"
+
+
+
+The fields that define each audit rule are:
+
+level             The audit level defining the verbosity of the event.
+resources         The object under audit (e.g., “ConfigMaps”).
+nonResourcesURL   A non resource Uniform Resource Locator (URL) path that is not associated with any resources.
+namespace         Specific objects within a namespace that are under audit.
+verb              Specific operation for audit – create, update, delete.
+users             Authenticated user that the rule applies to.
+userGroups        Authenticated user group the rule applies to.
+omitStages        Skips generating events on given stages.
+The audit level defines how much of the event should be recorded. There are four audit levels:
+
+None              Don’t log events that match this rule.
+Metadata          Logs request metadata (requesting user, timestamp, resource, verb, etc.) but does not log the request or response bodies.
+Request           Log event metadata and request body but not response body. This does not apply for non-resource requests.
+RequestResponse   Log event metadata, request, and response bodies. This does not apply for non-resource requests.
+
+
+For the following examples we’ll use the webhook backend, sending the events to Falco.
+
+Falco, the open-source cloud-native runtime security project, is the de facto Kubernetes threat detection engine.
+Falco detects unexpected application behavior and alerts on threats at runtime.
+
+
+
+
