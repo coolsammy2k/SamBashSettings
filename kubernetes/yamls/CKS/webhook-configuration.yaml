@@ -15,3 +15,29 @@ webhooks:
         apiGroups: [""]
         apiVersions: ["v1"]
         resources: ["pods"]
+
+
+---
+
+
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: "pod-policy.example.com"
+webhooks:
+  - name: "pod-policy.example.com"
+    clientConfig:
+      url: "https://external-server.example.com"
+      
+      service:
+        namespace: "webhook-namespace"
+        name: "webhook-service"
+      caBundle: "Ci......."
+
+    rules:
+      - apiGroups: [" "]
+        apiVersion: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+        scope: "Namespaced"
+
