@@ -17,3 +17,39 @@ spec:
   volumes:
   - name: log-volume
     emptyDir: {}
+
+---
+
+#ensure container immutability
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    securityContext:
+      readOnlyRootFilesystem: true    # privileged: true 
+    volumeMounts:
+    - mountPath: /var/cache/nginx
+      name: cache-volume
+    - name: runtime-volume
+      mountPath: /var/run
+
+  volumes:
+  - name: cache-volume
+    emptyDir: {}
+  - name: runtime-volume
+    emptyDir: {}
+
+ ---
+
+ $ kubectl exec -it nginx -- cat /proc/sys/vm/swappiness
+   60
+
+
+

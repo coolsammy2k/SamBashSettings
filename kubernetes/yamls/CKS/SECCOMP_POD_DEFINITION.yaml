@@ -69,3 +69,13 @@ spec:
 
 
 https://kubernetes.io/docs/tutorials/clusters/seccomp
+
+
+# Place to check logs for SECCOMP
+$ grep syscall /var/log/syslog
+
+# Map syscall number to syscall name, check the 
+
+$ grep -w 35 /usr/include/asm/unistd_64.h
+
+
