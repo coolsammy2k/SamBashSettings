@@ -1,0 +1,79 @@
+Context
+A container image scanner is set up on the cluster, but it's not yet fully integrated into the cluster's configuration. When complete, the container image scanner shall scan for and reject the use of vulnerable images.
+Task
+You have to complete the entire task on the cluster's master node, where all services and files have been prepared and placed.
+Given an incomplete configuration in directory /etc/kubernetes/etdconfig and a functional container image scanner with HTTPS endpoint https://acme.local:8081/image_policy:
+
+Enable the necessary plugins to create an image policy
+Validate the control configuration and change it to an implicit deny
+Edit the configuration to point to the provided HTTPS endpoint correctly
+Finally, test if the configuration is working by trying to deploy the vulnerable resource /root/KSSC00202/vulnerable-resource.yml
+
+
+Context
+AppArmor is enabled on the cluster's worker node. An AppArmor profile is prepared, but not enforced yet.
+You may use your browser to open one additional tab to access the AppArmor documentation.
+Task
+On the cluster's worker node, enforce the prepared AppArmor profile located at /etc/apparmor.d/nginx_apparmor.
+
+Edit the prepared manifest file located at /home/candidate/KSSH00401/nginx-pod.yaml to apply the AppArmor profile.
+
+Finally, apply the manifest file and create the Pod specified in it..
+
+
+Task
+Use runtime detection tools to detect anomalous processes spawning and executing frequently in the single container belonging to Pod tomcat.
+
+Two tools are available to use:
+
+sysdig
+falco
+The tools are pre-installed on the cluster's worker node only; they are not available on the base system or the master node.
+Using the tool of your choice (including any non pre-installed tool), analyse the container's behaviour for at least 30 seconds, using filters that detect newly spawning and executing processes.
+
+Store an incident file at /opt/KSRS00101/incidents/report, containing the detected incidents, one per line, in the following format:
+
+[timestamp],[uid],[processName]
+
+Keep the tool's original timestamp-format as-is.
+Make sure to store the incident file on the cluster's worker node.A
+
+
+
+Context
+A default-deny NetworkPolicy avoids to accidentally expose a Pod in a namespace that doesn't have any other NetworkPolicy defined.
+Task
+Create a new default-deny NetworkPolicy named denynetwork in the namespace production for all traffic of type Egress.
+
+The new NetworkPolicy must deny all Egress traffic in the namespace production.
+
+Apply the newly created default-deny NetworkPolicy to all Pods running in namespace production.
+
+You can find a skeleton manifest file at /home/candidate/KSCS00101/network-policy.y
+
+Context
+A PodSecurityPolicy shall prevent the creation of privileged Pods in a specific namespace.
+Task
+Create a new PodSecurityPolicy named prevent-psp-policy, which prevents the creation of privileged Pods.
+Create a new ClusterRole named deny-access-role, which uses the newly created PodSecurityPolicy prevent-psp-policy.
+Create a new ServiceAccount named psp-denial-sa in the existing namespace development.
+Finally, create a new ClusterRoleBinding named restrict-access-bind, which binds the newly created ClusterRole deny-access-role to the newly created ServiceAccount psp-denial-sa.
+
+
+A Role bound to a Pod's ServiceAccount grants overly permissive permissions. Complete the following tasks to reduce the set of permissions.
+Task
+Given an existing Pod named dev-pod running in the namespace monitoring.
+
+Edit the existing Role bound to the Pod's ServiceAccount test-sa-3 to only allow performing watch operations, only on resources of type Endpoints.
+
+Create a new Role named web-role-2 in the namespace monitoring, which only allows performing patch operations, only on resources of type statefulsets.
+
+Create a new RoleBinding named web-role-2-binding binding the newly created Role to the Pod's ServiceAccount.
+
+
+
+Task
+Analyze and edit the given Dockerfile (based on the ubuntu:16.04 image) /home/candidate/KSSC00301/Dockerfile fixing two instructions present in the file being prominent security/best-practice issues.
+Analyze and edit the given manifest file /home/candidate/KSSC00301/deployment.yaml fixing two fields present in the file being prominent security/best-practice issues.
+Don't add or remove configuration settings; only modify the existing configuration settings, so that two configuration settings each are no longer security/best-practice concerns.
+Should you need an unprivileged user for any of the tasks, use user nobody with user id 65535.
