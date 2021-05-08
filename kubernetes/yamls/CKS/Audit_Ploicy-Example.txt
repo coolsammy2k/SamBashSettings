@@ -16,6 +16,7 @@ Next, make sure to enable logging in api-server:
  - --audit-log-path=/var/log/prod-secrets.log
  - --audit-log-maxage=30     # Max days the files will be stored
  - --audit-log-mazsize=100   # Max size of file
+ - --audit-log-maxbackup=5   # 
 
 
 Then, add volumes and volume mounts as shown in the below snippets.
