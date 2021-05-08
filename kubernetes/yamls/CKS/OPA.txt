@@ -25,13 +25,19 @@ example.rego
 
 package httpapi.authz
 # HTTP API request
-   import input
-   default allow = false
+
+import input
+default allow = false
 
 allow {
   input.path == "home"
   input.user == "john"
 }
 
-$ curl -X PUT --data-binary @example.rego http://localhost:8181/v1/po1icies/examp1e
-$ curl http://10ca1host:8181/v1/p01icies
+$ curl -X PUT --data-binary @example.rego http://localhost:8181/v1/po1icies/example
+
+# To view a list of existing policies
+$ curl http://localhost:8181/v1/po1icies
+
+# OPA Policy Testing framework
+$ opa test . -v
