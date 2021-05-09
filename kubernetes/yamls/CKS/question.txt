@@ -9,6 +9,7 @@ Validate the control configuration and change it to an implicit deny
 Edit the configuration to point to the provided HTTPS endpoint correctly
 Finally, test if the configuration is working by trying to deploy the vulnerable resource /root/KSSC00202/vulnerable-resource.yml
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Context
 AppArmor is enabled on the cluster's worker node. An AppArmor profile is prepared, but not enforced yet.
@@ -19,6 +20,9 @@ On the cluster's worker node, enforce the prepared AppArmor profile located at /
 Edit the prepared manifest file located at /home/candidate/KSSH00401/nginx-pod.yaml to apply the AppArmor profile.
 
 Finally, apply the manifest file and create the Pod specified in it..
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 Task
@@ -39,6 +43,7 @@ Keep the tool's original timestamp-format as-is.
 Make sure to store the incident file on the cluster's worker node.A
 
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Context
 A default-deny NetworkPolicy avoids to accidentally expose a Pod in a namespace that doesn't have any other NetworkPolicy defined.
@@ -50,6 +55,9 @@ The new NetworkPolicy must deny all Egress traffic in the namespace production.
 Apply the newly created default-deny NetworkPolicy to all Pods running in namespace production.
 
 You can find a skeleton manifest file at /home/candidate/KSCS00101/network-policy.y
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
 Context
 A PodSecurityPolicy shall prevent the creation of privileged Pods in a specific namespace.
@@ -71,6 +79,7 @@ Create a new Role named web-role-2 in the namespace monitoring, which only allow
 Create a new RoleBinding named web-role-2-binding binding the newly created Role to the Pod's ServiceAccount.
 
 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Task
 Analyze and edit the given Dockerfile (based on the ubuntu:16.04 image) /home/candidate/KSSC00301/Dockerfile fixing two instructions present in the file being prominent security/best-practice issues.
