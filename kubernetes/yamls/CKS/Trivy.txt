@@ -22,3 +22,37 @@ $ kubectl -n delta get pods -o json | jq -r '.items[].spec.containers[].image'
 
 
 # CVE : Common Vulnerabilities and Exposures 
+
+
+# Install Trivy
+
+#Add the trivy-repo
+apt-get  update
+apt-get install wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+
+#Update Repo and Install trivy
+apt-get update
+apt-get install trivy
+
+
+Important Note: From version 0.8.0 and newer, trivy images are scanned using the trivy image subcommand.
+However, in older versions, to carry out a scan use the syntax: trivy image_name. In these versions, the image sub-command will not work.
+
+
+For example, notice the differences in scanning the nginx image:
+Version. 0.16: trivy image nginx
+
+Version: 0.8.0 and above: trivy nginx
+
+
+Example:
+Pull python:3.10.0a4-alpine image on controlplane host and scan the same using trivy. Save the scan results in /root/python_alpine.txt file on controlplane host.
+
+docker pull python:3.10.0a4-alpine
+trivy image --output /root/python_alpine.txt python:3.10.0a4-alpine
+
+Example 2:
+
+trivy image --output /root/python.txt --severity HIGH,CRITICAL python:3.6.12-alpine3.11
