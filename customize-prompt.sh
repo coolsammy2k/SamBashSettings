@@ -13,5 +13,6 @@ echo "source <(kubectl completion zsh)" >> ~/.zshrc
 echo 'alias k=kubectl' >> ~/.zshrc
 echo 'complete -F __start_kubectl k' >> ~/.zshrc
 
-
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 
