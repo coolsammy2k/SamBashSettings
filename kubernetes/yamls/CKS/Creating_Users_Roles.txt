@@ -1,0 +1,67 @@
+# Create Users and Role
+
+# Create certificate for user John
+
+$ openssl genrsa -out john.key 2048
+
+# Create Certificate Signing Request
+
+$ openssl req -new -key john.key -out john.csr -subj "/CN=john/O=finance"
+
+
+# In order to sign john's certificate we need the Certificate authoricity's private key, in kubeadm setup you will get it at /etc/kubernetes/pki/
+
+$ openssl x509 -req -in john.csr -CA /etc/kubernetes/pki/ca.crt  -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out john.crt -days 500
+
+
+# Create Kubeconfig file so that john can access the cluster
+
+
+$ kubectl --kubeconfig john.kubeconfig config set-cluster kubernetes --server https://192.168.56.2:6443 --certificate-authority=/etc/kubernetes/pki/ca.crt
+
+# Add user to the kubeconfig file
+
+$ kubectl --kubeconfig john.kubeconfig config set-credentials john --client-certificate /home/vagrant/users/john.crt --client-key /home/vagrant/users/john.key
+
+# Set the context for John user
+
+$ kubectl --kubeconfig john.kubeconfig config set-context john-kubernetes --cluster kubernetes --namespace finance --user john
+
+
+# Instead of sending the .crt, key and csr file, we can bake in the certificates in the kubeconfig file and send the kubeconfig file
+
+$ cat john.crt | base64 -w0    # ignore line wrap with -w0
+$ cat john.key | base64 -w0
+
+Add these files in kubeconfig file for client crt and key, 
+
+With this authentication bit will be working, now create role for access to resource
+
+# Create Role
+
+$ kubectl create role john-finance --verb=get,list --resource=pods --namespace finance
+
+# Crate Rolebinding and attach this role to john
+
+$ kubectl create rolebinding john-finance-rolebinding --role=john-finance --user=john --namespace finance
+
+
+
+=================
+
+Add to kubeconfig
+
+The last step is to add this user into the kubeconfig file.
+
+First, you need to add new credentials:
+
+kubectl config set-credentials myuser --client-key=myuser.key --client-certificate=myuser.crt --embed-certs=true
+
+Then, you need to add the context:
+
+kubectl config set-context myuser --cluster=kubernetes --user=myuser
+To test it, change the context to myuser:
+
+kubectl config use-context myuser
+
+
