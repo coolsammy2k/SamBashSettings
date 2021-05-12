@@ -64,4 +64,6 @@ To test it, change the context to myuser:
 
 kubectl config use-context myuser
 
+# View Certificate Details
 
+$ openssl x509 -in /etc/kubernetes/pki/apiserver.crt -text -noout
