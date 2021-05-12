@@ -1,0 +1,9 @@
+
+
+# Kubelet Service file
+
+/etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+# Config file
+
+/var/lib/kubelet/config.yaml
