@@ -1,129 +1,119 @@
-# zsh configuration file
-#
-# Author: Thomas Bendler <code@thbe.org>
-# Date:   Fri Dec 27 23:48:31 CET 2019
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
-# Add local sbin to $PATH.
-export PATH="/usr/local/sbin:${PATH}"
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# Path to the oh-my-zsh installation.
-export ZSH="${HOME}/.oh-my-zsh"
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/sam/.oh-my-zsh"
 
-# Use case-sensitive completion.
-CASE_SENSITIVE="true"
-
-# Define how often to auto-update (in days).
-export UPDATE_ZSH_DAYS=7
-
-# Enable command auto-correction.
-ENABLE_CORRECTION="true"
-
-# Display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Configure history stamp format
-HIST_STAMPS="yyyy-mm-dd"
-
-# Plugin configuration
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  ansible
-  brew
-  bundler
-  colored-man-pages
-  colorize
-  docker
-  git
-  nmap
-  osx
-  zsh-navigation-tools
-  zsh_reload
-  history
-  kubectl
-  virtualenv
-  autojump
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
-
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+#ZSH_THEME="robbyrussell"
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Load Zsh tools for syntax highlighting and autosuggestions
-HOMEBREW_FOLDER="/usr/local/share"
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source "${HOMEBREW_FOLDER}/zsh-autosuggestions/zsh-autosuggestions.zsh"
-# source "${HOMEBREW_FOLDER}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
 
-source /usr/local/Cellar/kube-ps1/0.7.0/share/kube-ps1.sh
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
 
-# Load oh-my-zsh framework
-source "${ZSH}/oh-my-zsh.sh"
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
 
-# Powerlevel10k configuration
-[ -e ${HOME}/.p10k.zsh ] && source ${HOME}/.p10k.zsh
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
 
-# Local custom plugins
-# for item in $(ls -1 ${HOME}/.profile.d/*.plugin.zsh); do
-#   [ -e "${item}" ] && source "${item}"
-# done
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
 
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
 
-#Kubernetes Context Toogle Prompt
-function kube-toggle() {
-  if (( ${+POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND} )); then
-    unset POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND
-  else
-    POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl|kogito'
-  fi
-  p10k reload
-  if zle; then
-    zle push-input
-    zle accept-line
-  fi
-}
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
 
-zle -N kube-toggle
-bindkey '^]' kube-toggle  # ctrl-] to toggle kubecontext in powerlevel10k prompt
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
 
-#source /Users/sam/.oh-my-zsh/themes/powerlevel10k/config/p10k-robbyrussell.zsh
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
 
+# Uncomment the following line to display red dots whilst waiting for completion.
+# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
+# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
+# COMPLETION_WAITING_DOTS="true"
 
-zshaddhistory() {
-    local line=${1%%$'\n'}
-    local cmd=${line%% *}
-    # Only those that satisfy all of the following conditions are added to the history
-    [[ ${#line} -ge 5
-       && ${cmd} != ll
-       && ${cmd} != ls
-       && ${cmd} != la
-       && ${cmd} != cd
-       && ${cmd} != man
-       && ${cmd} != scp
-       && ${cmd} != vim
-       && ${cmd} != nvim
-       && ${cmd} != less
-       && ${cmd} != ping
-       && ${cmd} != open
-       && ${cmd} != file
-       && ${cmd} != which
-       && ${cmd} != whois
-       && ${cmd} != drill
-       && ${cmd} != uname
-       && ${cmd} != md5sum
-       && ${cmd} != pacman
-       && ${cmd} != xdg-open
-       && ${cmd} != traceroute
-       && ${cmd} != speedtest-cli
-    ]]
-}
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-alias classis="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-classic.zsh"
-alias pure="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-pure.zsh"
-alias rainbow="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-rainbow.zsh"
-alias robby="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/10k-robbyrussell.zsh"
-alias lean8="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-lean-8colors.zsh"
-alias lean="source /Users/sam/.oh-my-zsh/custom/themes/powerlevel10k/config/p10k-lean.zsh"alias k=kubectl
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+#plugins=(git)
+plugins=( git docker zsh-syntax-highlighting zsh-autosuggestions )
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export CLICOLOR=1
+
+alias k=kubectl
+bindkey -v
+export PATH="/usr/local/sbin:$PATH"
