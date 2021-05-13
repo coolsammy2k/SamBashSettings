@@ -9,6 +9,9 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 
+# Install Powerlevel10
+git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+
 echo "source <(kubectl completion zsh)" >> ~/.zshrc
 echo 'alias k=kubectl' >> ~/.zshrc
 echo 'complete -F __start_kubectl k' >> ~/.zshrc
