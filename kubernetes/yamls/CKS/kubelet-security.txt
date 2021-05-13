@@ -2,8 +2,13 @@
 
 # Kubelet Service file
 
-/etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-
 # Config file
-
 /var/lib/kubelet/config.yaml
+
+/lib/systemd/system/kubelet.service
+    /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+         /var/lib/kubelet/kubeadm-flags.env
+
+ps -aux | grep kubelet
+
+
