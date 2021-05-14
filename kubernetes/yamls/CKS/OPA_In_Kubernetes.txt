@@ -35,6 +35,9 @@ webhooks:
         name: opa
 --
 
+# Create Configmap using rego file
+
+$ kubectl create cm rego_config_map --from-file=file_name.rego
 
 # OPA Load Policies . kubernetes.rego
 
