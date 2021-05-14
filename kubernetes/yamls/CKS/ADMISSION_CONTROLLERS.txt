@@ -3,7 +3,7 @@
 $ kube-apiserver -h | grep enable-admission-plugins
 
 
-# View Enabled Admission controller in Kubernetes
+# View Enabled Admission controller by default in Kubernetes
 
 $ kubectl exec -it kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep 'enable-admission-plugins'
 
@@ -12,9 +12,76 @@ $ kubectl create secret tls webhook-server-tls \
   --cert=/root/keys/webhook-server-tls.crt \
   --key=/root/keys/webhook-server-tls.key -n webhook-demo
 
+# Enable Admission controller. Add this in kube-apiserver.yaml
+  
+  - --enable-admission-plugins=NodeRestriction,RBAC,NamespaceAutoProvision
+
 # Disable Admission Controllers , add this in kube-apiserver.yaml
 
   - --disable-admission-plugins=DefaultStorageClass
 
 # Check the process to see enabled and disabled plugins.
 ps -ef | grep kube-apiserver | grep admission-plugins
+
+
+Admission Controllers pre-built in
+
+1. AlwaysPullImages   :Images are always pulled when a pod is created
+2. DefaultStorageClass : Observes the creation of PVC and adds a default storageclass
+3. EventRateLimit      : Set's a limit to number of calls to API server
+4. NamespaceExists     : Checks for existing namespace if not reject the request.
+
+5. NamespaceAutoPorvision : This admission controller is not enabled by default
+
+NamespaceExists and NamespaceAutoProvision admission controllers are deprecated and now replaced by NamespaceLifecycle admission controller
+
+
+Different Types of Admission Controllers and how to deploy an admission controller
+1. Mutating Admission controller:  It can change or mutate the object before creating, for example DefaultStorageClass adds DefaultStorage if not found in the yaml request
+2. Validating Admission controller: 
+
+there can be admission controllers which can do both Validate and Mutate.
+
+Generally Mutating Admission controllers are invoked first before Validating admission controllers, this is so becuase any change done by Mutating Admission controllers can be validated first before creating the object.
+
+
+to support external admission controllers there are two special admission controllers
+1. Mutating Admission Webhook 
+2. Validating Admission webhook
+
+How do we setup Webhook
+
+1. First we must deploy our own webhook admission server which will have our own logic
+2. and then we configure the webhook on kubernetes by creating a Webhook Configuration Object.
+
+Webhook server can be deployed externally or can be created as a deployment.
+If created as a deployment then it will have
+1. Webhook-deployment and Webhook-service
+
+then we create the configuration objects either  depending on the need
+ Validating Webhook Configuration object
+ Mutating Webhook configuration object
+Example below of ValidatingWebhookConfiguration
+
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: "pod-policy.example.com"
+webhooks:
+  - name: "pod-policy.example.com"
+    clientConfig:
+      service:
+        name: "webhook-service"
+        namespace: "webhook-namespace"
+      caBundle: "CiOtLS0tQk......tLS0K"
+
+  rules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"]
+      resources:  ["pods"]
+      scope: "Namespaced"
+
+
+
+
