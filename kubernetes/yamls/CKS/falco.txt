@@ -29,3 +29,32 @@ $ kill -1 $(cat /var/run/falco.pid)
 
 
 
+
+A pod in the sahara namespace has generated alerts that a shell was opened inside the container.
+Change the format of the output so that it looks like below:
+ALERT timestamp of the event without nanoseconds,User ID,the container id,the container image repository
+Make sure to update the rule in such a way that the changes will persists across Falco updates.
+You can refer the falco documentation Here
+
+
+
+
+
+#Add the below rule to /etc/falco/falco_rules.local.yaml and restart falco to override the currentrule
+#
+- rule: Terminal shell in container
+  desc: A shell was used as the entrypoint/exec point into a container with an attached terminal.
+  condition: >
+    spawned_process and container
+    and shell_procs and proc.tty != 0
+    and container_entrypoint
+    and not user_expected_terminal_shell_in_container_conditions
+  output: >
+    %evt.time.s,%user.uid,%container.id,%container.image.repository
+  priority: ALERT
+  tags: [container, shell, mitre_execution]
+
+# Use the falco documentation the use the correct sysdig filters in the output. For example, the evt.time.s filter prints the timestamp for the event without nano seconds. This is clearly described in the falco documentation here - https://falco.org/docs/rules/supported-fields/#evt-field-class
+
+
+
