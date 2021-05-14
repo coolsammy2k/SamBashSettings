@@ -1,0 +1,76 @@
+
+
+# 
+securityContext:
+    privileged: True
+    runAsUser: 0
+    capabilities:
+        add: ["CAP_SYS_BOOT"]
+volumes:
+- name: data-volume
+  hostPath:
+    path: /data
+    type: Directory
+
+Above pod definition has security risks as privileged and volume mounted as hostpath
+
+We may want to Create Policies that prevent users/developer from creating containers with certain configurations, thats where Pod Security Policies come in
+Pod Security Policies help in defining policies to restrict pods from being create with specific capabilities and previleges 
+
+One of the Admission controller is PodSecurityPolicy which is a built in admission controller but not enabled by default
+
+1. Enable the PodSecurityPolicy in kube-apiserver with enable-admission-plugins
+2. Create an object of PodSecurityPolicy, refer the psp.yaml file 
+
+
+---
+
+apiVersion:v1
+kind: Pod
+metadata:
+    name: sample-pod
+spec:
+   serviceAccount: default
+   containers:
+   - name: ubuntu
+     image: ubuntu
+     command: ["sleep", "3600"]
+     securityContext:
+        privileged: True
+        runAsUser: 0
+        capabilities:
+            add: ["CAP_SYS_BOOT"]
+   volumes:
+   - name: data-volume
+     hostPath:
+        path:/data
+
+---
+
+psp-example-role.yaml
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: psp-example-role
+rules:
+  - apiGroups: ["policy"]
+    resources: ["podsecuritypolicies"]
+    resourceNames: ["example-psp"]
+    verbs: ["use"]
+
+---
+psp-example-rolebinding.yaml
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Rolebinding
+metadata:
+  name: psp-example-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: Role
+  name: psp-example-role
+  apiGroup: rbac.authorization.k8s.io
