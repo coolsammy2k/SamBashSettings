@@ -27,11 +27,37 @@ spec:
     ports:
     - protocol: TCP
       port: 6379
+---
+
+A few pods have been deployed in the apps-xyz namespace. There is a pod called redis-backend which serves as the backend for the apps app1 and app2. The pod called app3 on the other hand, does not need access to this redis-backend pod. Create a network policy called allow-app1-app2 that will only allow incoming traffic from app1 and app2 to the redis-pod.
+Make sure that all the available labels are used correctly to target the correct pods. Do not make any other changes to these objects.
 
 
 
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-app1-app2
+  namespace: apps-xyz
+spec:
+  podSelector:
+    matchLabels:
+      tier: backend
+      role: db
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          name: app1
+          tier: frontend
+    - podSelector:
+        matchLabels:
+          name: app2
+          tier: frontend
 
 ---
+
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
