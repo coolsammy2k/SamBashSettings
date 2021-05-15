@@ -3,7 +3,7 @@
 $ kube-apiserver -h | grep enable-admission-plugins
 
 
-# View Enabled Admission controller by default in Kubernetes
+# View Enabled Admission controller by DEFAULT in Kubernetes
 
 $ kubectl exec -it kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep 'enable-admission-plugins'
 
