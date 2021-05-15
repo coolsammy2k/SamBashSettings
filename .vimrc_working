@@ -13,14 +13,14 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 call plug#begin('~/.vim/plugged')   "Installing Vim Plugins
      Plug 'vim-airline/vim-airline' "Setting up my status bar
      Plug 'vim-airline/vim-airline-themes'
-     Plug 'airblade/vim-gitgutter' "Shows changes if you're working with git
+    " Plug 'airblade/vim-gitgutter' "Shows changes if you're working with git
      Plug 'scrooloose/nerdtree'     
 
-     "Syntax
-     Plug 'morhetz/gruvbox'        "Theme
-     Plug 'jacoborus/tender.vim'
+     "Syntax 
+     Plug 'morhetz/gruvbox'       
      Plug 'joshdick/onedark.vim'
      Plug 'sainnhe/edge'
+
 
      Plug 'nathanaelkane/vim-indent-guides'
      Plug 'yggdroot/indentline'
@@ -34,16 +34,10 @@ call plug#begin('~/.vim/plugged')   "Installing Vim Plugins
 call plug#end()
 
 set encoding=UTF-8
-filetype plugin indent on "Enabling Plugin & Indent
 syntax on "Turning Syntax on
-filetype plugin on
-filetype indent on
-set autoread
 set wildmenu "Tab completion everywhere
 "set number relativenumber 
 "set nu rnu
-set spelllang=en_us
-set spell
 set backspace=indent,eol,start    "Making sure backspace works
 set noruler "setting up rulers & spacing, tabs
 set confirm
@@ -60,6 +54,10 @@ set hidden      "Allow to change buffers without writing to buffers
 
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
+
+" Let your leader key to comma , 
+"let mapleader = ","
+nnoremap <silent> <leader>n :nohlsearch<CR>
 
 "Key re-maps
 map <C-n> :Lex!<CR>
@@ -87,8 +85,6 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 
 "Color schemes need to be below everything else that effects color apparently.
 "If no thing will load out of order and not work properly
-colorscheme gruvbox "Setting up Gruvbox and airline, (colors)
-let g:airline_theme='gruvbox'
-let g:solarized_termcolors=256
-set background=dark
-
+"colorscheme gruvbox "Setting up Gruvbox and airline, (colors)
+"colorscheme onedark
+colorscheme gruvbox
