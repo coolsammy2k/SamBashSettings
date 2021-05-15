@@ -57,4 +57,64 @@ You can refer the falco documentation Here
 # Use the falco documentation the use the correct sysdig filters in the output. For example, the evt.time.s filter prints the timestamp for the event without nano seconds. This is clearly described in the falco documentation here - https://falco.org/docs/rules/supported-fields/#evt-field-class
 
 
+# Falco Configuration Files
+
+How to update existing rules and how to add custom rules
+
+Rules are configured at /etc/falco/falco.yaml, falco uses this file during falco startup
+
+$ journalctl -u falco
+
+
+# How rules are loaded by falco present in /etc/falco/falco.yaml under rules_file filed, order in which the rules are declared in this list is important
+
+rules_file: 
+   - /etc/falco/falco_rules.yaml
+   - /etc/falco/falco_rules.local.yaml
+   - /etc/falco/k8s_audit_rules.yaml
+   - /etc/falco/rules.d
+
+
+json_output: false    # events are logged as text
+log_stderr: true
+log_syslog: true
+log_level: info       # logs generated are specific to falco istself
+
+priority: debug       # is related to falco rules, this is minimum priority , every event will be logged by default
+
+# output channels
+
+stdout_output:
+   enabled: true
+
+file_output:
+   enabled: true
+   filename: /opt/falco/events.txt
+
+program_output:
+   enabled: true
+   program: "jq '{text: .output}' | curl -d @- -X POST https://hooks.slack.com/services/XXX"
+
+http_output:
+   enabled: true
+   url: http://some.url/some/path/
+
+any changes to these files need a falco reload using $kill -1 $(cat /var/run/falco.pid)
+
+The /etc/falco/falco_rules.yaml is the default rules file which contains all the rules, list, macros , built in rules
+
+Falco comes bundled with plenty of built in rules that cover several situations that we would want to audit. However we can override or write out our own rules
+
+We should always update the falco_rules.local.yaml to changed rules. We can add our own custom rules
+
+priority: WARNING
+priority: CRITICAL
+
+
+
+
+
+
+
+
 
