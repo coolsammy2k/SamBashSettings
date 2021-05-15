@@ -19,6 +19,7 @@ With security in mind, we’ll create a policy that filters requests related to 
 
 Such a policy would look like:
 
+# audit-policy.yaml
 
 apiVersion: audit.k8s.io/v1 # This is required.
 kind: Policy
@@ -98,4 +99,27 @@ Falco detects unexpected application behavior and alerts on threats at runtime.
 
 
 
+# To Enable auditing 
 
+ - --audit-policy-file=/etc/kubernetes/prod-audit.yaml
+ - --audit-log-path=/var/log/prod-secrets.log
+ - --audit-log-maxage=30     # Max days the files will be stored
+ - --audit-log-maxsize=100   # Max size of file
+ - --audit-log-maxbackup=5   # 
+
+audit-policy.yaml
+
+apiVesion: audit.k8s.io/v1
+kind: Policy
+omitStages: ["RequestReceived"]
+rules:
+  - namespace: ["prod-namespace"]   # namespace is optional, if not given it will be applied across all pods
+    verb: ["delete"]                # verb is also optional
+    resources:
+    - groups: " "
+      resources: ["pods"]
+      resouceNames: ["webapp-pod"]
+    level: Request     # Metadata, Request, RequestResponse
+
+
+  
