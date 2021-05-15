@@ -1,10 +1,51 @@
-#AppArmor 
+# AppArmor
+
+AppArmor is used to further reduce the applications capabilities to reduce the attach surface of a threat.
+Seccomp Profiles used to restrict syscalls for a pod, but we cannot use seccomp to restrict a programs access to specific objects such as file or a directory
+
+How do we restrict a program to write to a filesystem or a directory ? in this case we use AppArmor, which gives us a fine grained control over the processes run in an application container.
+
+AppArmor is a linux security module which is used to confine a program to a limited set of resources.
+
+
+# To check if AppArmor is installed and enabled.
+
+$ systemctl status apparmor
+
+To use Apparmor the apparmor kernel module should be loaded on all the nodes where the container would run. this can be checked by the enabled file under /sys/module/apparmor/parameters directory
 
 $ cat /sys/module/apparmor/parameters/enabled
 Y
 
+Just like Seccomp , apparmor is applied to an application through a profile. This profile must be loaded in the kernel and can be verfied by the below command.
+
 $ cat /sys/kernel/security/apparmor/profiles
 
+Apparmor are simple text files that define what resouces are used by an application, these include linux capabilites, network resource , file resources etc.
+
+For Example:
+A profile that restricts all file writes within a filesystem is as below
+
+apparmor-deny-write
+
+	profile apparmor-deny-write flags=(attach_disconnected) {
+	    file,
+	    # Deny all file writes.
+            deny /** w,
+	}
+
+the Apparmor profiles that are loaded can be checked with the command
+
+$ aa-status
+
+Pofiles can be loaded in three modes. enfore, complain and unconfined
+
+enfore: apparmor will monitor and enfore the rules on any application that suits the profile
+complain:  apparmor will allow to perform the tasks without any restrictions but will log the events
+unconfined: allows to applications to perform any tasks, but apparmor will not log it as events.
+
+
+# Create Apparmor profile
 
 # Create Custom application specific profiles from scratch
 # As an Example, let's consider a simple bash script which creates directories in a particular directory
@@ -24,12 +65,15 @@ $ apt-get install -y apparmor-utils
 
 $ aa-genprof /root/add_data.sh
 
+# Open another terminal and run the bash script, apparmor will detect this file exectuion and start presenting questions in  the above aa-genprof command terminal
 #After completing the questions from above command run aa-status command to check the status of the profile 
+
 $ aa-status
 
 # The profiles are stored under the directory
   cat /etc/apparmor.d/root.add_data.sh
 
+New apparmor profiles and existing profiles are stored under /etc/apparmor.d/ directory
 
 
 # Load Apparmor Profile
@@ -46,8 +90,13 @@ Profiles are configured in three modes
 $ apparmor_parser -q /etc/apparmor.d/usr.sbin.nginx
 
 # To disable the profile
+
 $ apparmor_parser -R /etc/apparmor.d/root.add_data.sh
+
 $ ln -s /etc/apparmor.d/root.add_data.sh /etc/apparmor.d/disable/
+
+
+
 
 # AppArmor security profiles for Docker
 
@@ -118,3 +167,95 @@ spec:
   containers:
   - image: nginx
     name: nginx
+
+
+-------------------------
+
+
+
+# AppArmor profiles in Kubernetes
+
+Conditions:
+  1. K8 Version > 1.4
+  2. AppArmor Kernel Module should be enabled on all nodes
+  3. AppArmor profile should be loaded on all the the worker nodes
+  4. Container Runtime should be supported (docker, crio, containerd)
+
+
+#Check Apparmor loaded profiles : https://kubernetes.io/docs/tutorials/clusters/apparmor/
+
+$ cat /sys/kernel/security/apparmor/profiles | sort
+
+ AppArmor support on nodes by checking the node ready condition message (though this is likely to be removed in a later release):
+
+ kubectl get nodes -o=jsonpath=$'{range .items[*]}{@.metadata.name}: {.status.conditions[?(@.reason=="KubeletReady")].message}\n{end}'
+
+
+ AppArmor profiles are specified per-container. To specify the AppArmor profile to run a Pod container with, add an annotation to the Pod's metadata:
+
+ container.apparmor.security.beta.kubernetes.io/<container_name>: <profile_ref>
+ 
+ Where <container_name> is the name of the container to apply the profile to, and <profile_ref> specifies the profile to apply. The profile_ref can be one of:
+
+ runtime/default            : to apply the runtime's default profile
+ localhost/<profile_name>   : to apply the profile loaded on the host with the name <profile_name>
+ unconfined                 : to indicate that no profiles will be loaded
+
+
+
+Example: ubuntu-sleeper.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper
+spec:
+  containers:
+  - name: hello
+    image: ubuntu
+    command: [ "sh", "-c", "echo 'Sleeping for an hour!' && sleep 1h" ]
+
+
+# Profile, apparmor-deny-write
+
+profile apparmor-deny-write flags=(attach_disconnected) {
+  file,
+  # Deny all file writes.
+  deny /** w,
+}
+
+# Make sure this above profile is loaded on all the nodes by using the aa-status command
+
+$ aa-status
+
+# Apparmor profiles are applied per container and since this is still in beta, we need
+add this as an annotation to pods metadata 
+
+File: ubuntu-sleeper.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/<container_name>: localhost/<profile-name>
+    container.apparmor.security.beta.kubernetes.io/ubuntu-sleeper: localhost/apparmor-deny-write
+
+spec:
+  containers:
+  - name: ubuntu-sleeper
+    image: ubuntu
+    command: [ "sh", "-c", "echo 'Sleeping for an hour!' && sleep 1h" ]
+
+$ kubectl create -f ubuntu-sleeper.yaml
+
+$ kubectl logs ubuntu-sleeper
+  sleeping for an hour!
+
+# Test this profile
+
+$ kubectl exec -it ubuntu-sleeper -- touch /tmp/test
+  touch: cannot touch '/tmp/test' : Permission denied
+  command terminated with exit code 1
+
+
