@@ -258,4 +258,28 @@ $ kubectl exec -it ubuntu-sleeper -- touch /tmp/test
   touch: cannot touch '/tmp/test' : Permission denied
   command terminated with exit code 1
 
+---
 
+
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/nginx: localhost/restricted-frontend #Apply profile 'restricted-fronend' on 'nginx' container 
+  labels:
+    run: nginx
+  name: frontend-site
+  namespace: omni
+spec:
+  serviceAccount: frontend-default #Use the service account with least privileges
+  containers:
+  - image: nginx:alpine
+    name: nginx
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html
+      name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+       path: /data/pages
+       type: Directory
