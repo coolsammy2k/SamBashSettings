@@ -46,6 +46,7 @@ set autoindent
 set smartindent
 set tabstop=4
 set expandtab
+set smarttab
 set hls is "Making sure search highlights words as we type them
 set ic
 set laststatus=2 "Setting the size for the command area and airline status bar

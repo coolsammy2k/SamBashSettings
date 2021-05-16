@@ -1,0 +1,64 @@
+how to make kubectl jsonpath output on separate lines
+
+$ kubectl get pods -A -o jsonpath='{.items[*].status.podIP}'
+
+adding new lines
+
+$ kubectl get pods -A -o jsonpath='{range .items[*]}{.status.podIP}{"\n"}{end}'
+
+# Pod Namespaces/names along with their IPSs
+$ kubectl get pods -A -o jsonpath='{range .items[*]}{.metadata.namespace}{"/"}{.metadata.name}{","}{.status.podIP}{"\n"}{end}'
+
+
+4. Create YAML from kubectl commands 
+
+$ kubectl run busybox --image=busybox --dry-run=client -o yaml --restart=Never > yamlfile.yaml
+
+$ kubectl create job my-job --dry-run=client -o yaml --image=busybox -- date  > yamlfile.yaml
+
+$ kubectl get -o yaml deploy/nginx > 1.yaml (Ensure that you have a deployment named as nginx)
+
+$ kubectl run busybox --image=busybox --dry-run=client -o yaml --restart=Never -- /bin/sh -c "while true; do echo hello; echo hello again;done" > yamlfile.yaml
+
+$ kubectl run wordpress --image=wordpress –-expose –-port=8989 --restart=Never -o yaml
+
+$ kubectl run test --image=busybox --restart=Never --dry-run=client -o yaml -- bin/sh -c 'echo test;sleep 100' > yamlfile.yaml  (Notice that --bin comes at the end. This will create yaml file.)
+
+
+
+# Identifying which containers in our pod are running the upstream redis image.
+
+$ kubectl get pods -o jsonpath='{.items[0].spec.containers[?(@.image == "redis")].name}'
+
+
+$ kubectl get pods -A -o \
+    'custom-columns=POD:metadata.name,IMAGE:spec.containers[*].image' | \
+        column -t -s,
+
+
+$ cat versions.fmt
+NAMESPACE            NAME           IMAGE
+metadata.namespace   metadata.name  status.containerStatuses[0].imageID
+
+$ kubectl get pods -A -o custom-columns-file=versions.fmt
+
+$ kubectl get pods -A -o \
+  custom-columns=NAMESPACE:metadata.namespace,NAME:metadata.name
+
+
+List Container images by Pod
+$ kubectl get pods --all-namespaces -o=jsonpath='{range .items[*]}{"\n"}{.metadata.name}{":\t"}{range .spec.containers[*]}{.image}{", "}{end}{end}' |\
+sort
+
+
+List Container images filtering by Pod label
+
+$ kubectl get pods --all-namespaces -o=jsonpath='{..image} {"\n"}' -l app=nginx
+
+
+List all Container images in all namespaces
+
+$ kubectl get pods --all-namespaces -o jsonpath="{..image}" |\
+tr -s '[[:space:]]' '\n' |\
+sort |\
+uniq -c
