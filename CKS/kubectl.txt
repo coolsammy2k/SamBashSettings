@@ -62,3 +62,7 @@ $ kubectl get pods --all-namespaces -o jsonpath="{..image}" |\
 tr -s '[[:space:]]' '\n' |\
 sort |\
 uniq -c
+
+
+#Api Resource in groups
+kubectl api-resources --api-group apps -o wide
