@@ -36,4 +36,4 @@ users:
 Add AdmisionConfiguration to kube-apiserver
 
 --enable-admission-plugins= ImagePolicyWebhook
---admission-control-config-file=/etc/kubernetes/pki/admission-config.yaml
+--admission-control-config-file=/etc/kubernetes/admission-config.yaml

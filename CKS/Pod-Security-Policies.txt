@@ -20,7 +20,7 @@ Pod Security Policies help in defining policies to restrict pods from being crea
 One of the Admission controller is PodSecurityPolicy which is a built in admission controller but not enabled by default
 
 1. Enable the PodSecurityPolicy in kube-apiserver with enable-admission-plugins
-2. Create an object of PodSecurityPolicy, refer the psp.yaml file 
+2. Create an object of PodSecurityPolicy, refer below psp object psp.yaml
 
 
 ---
@@ -74,3 +74,56 @@ roleRef:
   kind: Role
   name: psp-example-role
   apiGroup: rbac.authorization.k8s.io
+
+
+
+
+---
+
+# Pod Security Policy Object 
+psp.yaml
+
+
+
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: example-psp
+spec:
+  privileged: false
+  seLinux:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+  volumes:
+  - configMap
+  - secret
+  - emptyDir
+  - hostPath
+
+
+---
+
+
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: example1-psp
+spec:
+  privileged: false      # Only allow the pod creation if privileged flag is false
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  requiredDropCapabilities:
+  - 'CAP_SYS_BOOT'
+  defaultAddCapabilites:
+  - 'CAP_SYS_TIME'
+  volumes:
+  - 'persistentVolumeClaim'
