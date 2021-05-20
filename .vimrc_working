@@ -15,6 +15,7 @@ call plug#begin('~/.vim/plugged')   "Installing Vim Plugins
      Plug 'vim-airline/vim-airline-themes'
     " Plug 'airblade/vim-gitgutter' "Shows changes if you're working with git
      Plug 'scrooloose/nerdtree'     
+     Plug 'itchyny/lightline.vim'                       " Lightline statusbar
 
      "Syntax 
      Plug 'morhetz/gruvbox'       
@@ -53,6 +54,7 @@ set cmdheight=2
 set hidden      "Allow to change buffers without writing to buffers
 set path+=**
 set wildmenu
+set splitbelow splitright
 
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
