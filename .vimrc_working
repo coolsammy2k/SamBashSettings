@@ -51,6 +51,8 @@ set ic
 set laststatus=2 "Setting the size for the command area and airline status bar
 set cmdheight=2
 set hidden      "Allow to change buffers without writing to buffers
+set path+=**
+set wildmenu
 
 " when scrolling, keep cursor 3 lines away from screen border
 set scrolloff=3
