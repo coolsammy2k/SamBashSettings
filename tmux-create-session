@@ -1,0 +1,11 @@
+#!/bin/bash
+
+session=cks
+
+tmux new-session -s "$session"  -d
+
+for i in {0..15}; do
+   tmux new-window -t "$i" -n "Q$i"
+done
+
+tmux select-window -t "$session:0"
