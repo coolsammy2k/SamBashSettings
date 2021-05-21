@@ -60,6 +60,7 @@ call plug#begin('~/.vim/plugged')
 
      Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
      Plug 'junegunn/fzf.vim'
+     Plug 'airblade/vim-rooter'                        "For FZF to look for files starting the root directory of a git project
 
 call plug#end()
 
