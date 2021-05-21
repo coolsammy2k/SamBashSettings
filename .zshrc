@@ -84,7 +84,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git)
-plugins=( git docker zsh-syntax-highlighting zsh-autosuggestions )
+plugins=( git docker zsh-syntax-highlighting zsh-autosuggestions fzf )
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -116,9 +116,13 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+bindkey -v
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_BASE="$HOME/.fzf"
+export FZF_DEFAULT_OPS="--extended"
+export FZF_DEFAULT_COMMAND="fd --type f"
+
 export CLICOLOR=1
 
 alias k=kubectl
-bindkey -v
 export PATH="/usr/local/sbin:$PATH"
