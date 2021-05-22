@@ -9,26 +9,32 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle For Managing Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 call plug#begin('~/.vim/plugged')
 
-"{{ The Basics }}
     Plug 'gmarik/Vundle.vim'                           " Vundle
     Plug 'itchyny/lightline.vim'                       " Lightline statusbar
-    Plug 'suan/vim-instant-markdown', {'rtp': 'after'} " Markdown Preview
-    Plug 'frazrepo/vim-rainbow'
-"{{ File management }}
     Plug 'vifm/vifm.vim'                               " Vifm
     Plug 'scrooloose/nerdtree'                         " Nerdtree
     Plug 'tiagofumo/vim-nerdtree-syntax-highlight'     " Highlighting Nerdtree
     Plug 'ryanoasis/vim-devicons'                      " Icons for Nerdtree
-"{{ Productivity }}
-    Plug 'vimwiki/vimwiki'                             " VimWiki 
     Plug 'jreybert/vimagit'                            " Magit-like plugin for vim
-"{{ Tim Pope Plugins }}
     Plug 'tpope/vim-surround'                          " Change surrounding marks
 "{{ Syntax Highlighting and Colors }}
     Plug 'PotatoesMaster/i3-vim-syntax'                " i3 config highlighting
@@ -39,12 +45,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/goyo.vim'                           " Distraction-free viewing
     Plug 'junegunn/limelight.vim'                      " Hyperfocus on a range
     Plug 'junegunn/vim-emoji'                          " Vim needs emojis!
-
-
-    Plug 'vim-airline/vim-airline' "Setting up my status bar
+    Plug 'vim-airline/vim-airline'                     "Setting up my status bar
     Plug 'vim-airline/vim-airline-themes'
-    " Plug 'airblade/vim-gitgutter' "Shows changes if you're working with git
-    Plug 'scrooloose/nerdtree'     
+    " Plug 'airblade/vim-gitgutter'                    "Shows changes if you're working with git
 
     "Syntax 
     Plug 'morhetz/gruvbox'       
@@ -52,15 +55,15 @@ call plug#begin('~/.vim/plugged')
     Plug 'sainnhe/edge'
 
 
-     Plug 'nathanaelkane/vim-indent-guides'
-     Plug 'yggdroot/indentline'
+    Plug 'nathanaelkane/vim-indent-guides'
+    Plug 'yggdroot/indentline'
 
      "SuperTab
-     Plug 'ervandew/supertab'
+    Plug 'ervandew/supertab'
 
-     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-     Plug 'junegunn/fzf.vim'
-     Plug 'airblade/vim-rooter'                        "For FZF to look for files starting the root directory of a git project
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+    Plug 'airblade/vim-rooter'                        "For FZF to look for files starting the root directory of a git project
 
 call plug#end()
 
