@@ -189,3 +189,6 @@ nnoremap <Right> :vertical resize +2<CR>
 " Removes pipes | that act as seperators on splits
 set fillchars+=vert:\ 
 
+" Make backspace work
+set backspace=indent,eol,start
+
