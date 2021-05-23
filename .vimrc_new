@@ -196,6 +196,12 @@ nnoremap <Down>	:resize -2<CR>
 nnoremap <Left>	:vertical resize -2<CR>
 nnoremap <Right> :vertical resize +2<CR>
 
+"Change buffer to next
+nnoremap <Leader>b :ls<CR>:b<Space>
+
+"Fuzzy Find shortcut
+nnoremap <Leader>f :FZF<CR>
+
 " Removes pipes | that act as seperators on splits
 set fillchars+=vert:\ 
 
