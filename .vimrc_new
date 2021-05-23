@@ -92,6 +92,7 @@ filetype plugin indent on    " required
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set path+=**					" Searches current directory recursively.
 set wildmenu					" Display all matches when tab complete.
+set wildmode=full 
 set incsearch                   " Incremental search
 set hidden                      " Needed to keep multiple buffers open
 set nobackup                    " No auto backups
@@ -205,6 +206,7 @@ nnoremap <Leader>f :FZF<CR>
 "Toggle IndentLinesEnable & IndentGuideLinesToggle
 nnoremap <Leader>i :IndentLinesToggle<CR>
 nnoremap <Leader>g :IndentGuidesToggle<CR>
+nnoremap <Leader>l :LeadingSpaceToggle<CR>
 
 
 " Removes pipes | that act as seperators on splits
