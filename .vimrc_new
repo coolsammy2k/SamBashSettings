@@ -211,6 +211,13 @@ nnoremap <Leader>i :IndentLinesToggle<CR>
 nnoremap <Leader>g :IndentGuidesToggle<CR>
 nnoremap <Leader>l :LeadingSpaceToggle<CR>
 
+"Copy to system clipboard keymappings
+"Set it to unnamed to use * (PRIMARY, on select)
+"Set it to unnamedplus to use + (CLIPBOARD, ^C)
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
 
 " Removes pipes | that act as seperators on splits
 set fillchars+=vert:\ 
