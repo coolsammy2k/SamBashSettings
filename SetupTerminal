@@ -35,12 +35,10 @@ Configure Powerlevel10k Theme
 
 
 # Add below to .zshrc
-source <(kubectl completion zsh)
-
-# run command
+echo 'source <(kubectl completion zsh)' >> ~/.zshrc
 echo 'alias k=kubectl' >>~/.zshrc
-echo 'complete -F __start_kubectl k' >>~/.zshrc
-
+echo 'complete -F __start_kubectl k' >> ~/.zshrc
+echo 'export FZF_DEFAULT_COMMAND='find . -path './.git' -prune -o -print' ' >> ~/.zshrc
 
 Checking for X11-clipboard support in terminal
 vim --version | grep clipboard
