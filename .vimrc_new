@@ -200,6 +200,9 @@ nnoremap <Right> :vertical resize +2<CR>
 "Change buffer to next
 nnoremap <Leader>b :ls<CR>:b<Space>
 
+"Hide/Unload buffer from window
+nnoremap <Leader>u :bunload<CR>
+
 "Fuzzy Find shortcut
 nnoremap <Leader>f :FZF<CR>
 
