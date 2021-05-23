@@ -223,6 +223,9 @@ noremap <Leader>P "+p
 nnoremap ]b :bnext<CR>
 nnoremap [b :bprev<CR>
 
+"Open all buffers in vertical split
+nnoremap <Leader>v :vert ba<CR>
+
 
 " Removes pipes | that act as seperators on splits
 set fillchars+=vert:\ 
