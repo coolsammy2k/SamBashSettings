@@ -61,9 +61,16 @@ call plug#begin('~/.vim/plugged')
      "SuperTab
     Plug 'ervandew/supertab'
 
+
+    "Fuzzy Finder Plugin
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'airblade/vim-rooter'                        "For FZF to look for files starting the root directory of a git project
+
+    Plug 'christoomey/vim-tmux-navigator'             "Navigating between vim and tmux https://github.com/christoomey/vim-tmux-navigator
+                                                      " <ctrl-h>=> Left,
+                                                      " <ctrl-j>=> Down,
+                                                      " <ctrl-k>=> Up 
 
 call plug#end()
 
@@ -94,6 +101,7 @@ set number relativenumber       " Display line numbers
 set clipboard=unnamedplus       " Copy/paste between vim and other programs.
 syntax enable
 let g:rehash256 = 1
+set ic
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Remap Keys
@@ -165,6 +173,8 @@ noremap <silent> <C-Down> :resize -3<CR>
 map <Leader>th <C-w>t<C-w>H
 map <Leader>tk <C-w>t<C-w>K
 
+" This moves Vim to the background and switches the screen back to the terminal from which Vim was called. Running fg in the terminal moves Vim back to the foreground.
+nnoremap <leader>t :stop<CR>
 
 "Move lines up down using control key i,j,k in visual, normal mode
 
@@ -180,7 +190,6 @@ vnoremap <S-k> :m '<-2<CR>gv=gv
 
 "Key re-maps
 map <C-n> :Lex!<CR>
-map <C-u> :source ~/.vimrc<CR>
 nnoremap <Up>	:resize +2<CR>
 nnoremap <Down>	:resize -2<CR>
 nnoremap <Left>	:vertical resize -2<CR>
