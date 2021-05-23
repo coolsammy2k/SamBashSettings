@@ -219,6 +219,11 @@ noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
 
+"Change buffers short cut 
+nnoremap ]b :bnext<CR>
+nnoremap [b :bprev<CR>
+
+
 " Removes pipes | that act as seperators on splits
 set fillchars+=vert:\ 
 
