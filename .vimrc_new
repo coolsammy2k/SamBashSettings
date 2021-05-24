@@ -152,6 +152,9 @@ let g:NERDTreeWinSize=38
 set mouse=nicr
 set mouse=a
 
+" Focus Follows-mouse for gvim 
+set mousefocus
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Splits and Tabbed Files
@@ -177,6 +180,9 @@ set timeoutlen=2000
 " Change 2 split windows from vert to horiz or horiz to vert
 map <Leader>th <C-w>t<C-w>H
 map <Leader>tk <C-w>t<C-w>K
+
+" Swap vi windows
+nnoremap <Leader>x <C-w><C-x>
 
 " This moves Vim to the background and switches the screen back to the terminal from which Vim was called. Running fg in the terminal moves Vim back to the foreground.
 nnoremap <leader>t :stop<CR>
