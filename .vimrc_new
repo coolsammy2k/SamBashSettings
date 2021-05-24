@@ -171,6 +171,9 @@ noremap <silent> <C-Right> :vertical resize -3<CR>
 noremap <silent> <C-Up> :resize +3<CR>
 noremap <silent> <C-Down> :resize -3<CR>
 
+"Set Leader key timeout len to double the initial time i.e 2000 milliseconds
+set timeoutlen=2000
+
 " Change 2 split windows from vert to horiz or horiz to vert
 map <Leader>th <C-w>t<C-w>H
 map <Leader>tk <C-w>t<C-w>K
