@@ -184,6 +184,9 @@ map <Leader>tk <C-w>t<C-w>K
 " Swap vi windows
 nnoremap <Leader>x <C-w><C-x>
 
+" Ripgrep short cut
+nnoremap <Leader>r :Rg<CR>
+
 " This moves Vim to the background and switches the screen back to the terminal from which Vim was called. Running fg in the terminal moves Vim back to the foreground.
 nnoremap <leader>t :stop<CR>
 
@@ -229,7 +232,7 @@ noremap <Leader>Y "+y
 noremap <Leader>P "+p
 
 "Toggle relative number
-nnoremap <Leader>r :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
+nnoremap <Leader>n :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
 
 
 "Change buffers short cut 
