@@ -49,7 +49,8 @@ $ apt install vim-gtk
 
 https://github.com/nickjj/dotfiles.git
 
-
+#Tmux plugin Install
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 #Install FZF
 $ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
