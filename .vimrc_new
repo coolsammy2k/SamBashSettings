@@ -219,6 +219,10 @@ noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
 
+"Toggle relative number
+nnoremap <Leader>r :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
+
+
 "Change buffers short cut 
 nnoremap ]b :bnext<CR>
 nnoremap [b :bprev<CR>
