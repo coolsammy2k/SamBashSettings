@@ -104,4 +104,44 @@ COPY --from=0 /app /home/appuser/
 USER appuser
 CMD ["/home/appuser/app"]
 
+---
 
+# You can delete pods fast with, Ctrl+z to put the job to background
+
+$ kubectl delete pod x --grace-period 0 --force
+
+
+export do="--dry-run=client -o yaml"
+
+$ kubectl run pod1 --image=nginx $do
+
+
+Vim
+
+Also create the file ~/.vimrc with the following content:
+
+set shiftwidth=2
+set tabstop=2
+set expandtab
+
+
+---
+ Write all context names i
+k config get-contexts # copy by hand
+k config get-contexts -o name > /opt/course/1/contexts
+
+k config view -o jsonpath="{.contexts[*].name}"
+k config view -o jsonpath="{.contexts[*].name}" | tr " " "\n" # new lines
+k config view -o jsonpath="{.contexts[*].name}" | tr " " "\n" > /opt/course/1/contexts
+
+
+From the kubeconfig extract the certificate of user
+
+k config view --raw
+OR
+
+k config view --raw -ojsonpath="{.users[2].user.client-certificate-data}" | base64 -d > /opt/course/1/cert
+
+OR
+
+k config view --raw -ojsonpath="{.users[?(.name == 'restricted@infra-prod')].user.client-certificate-data}" | base64 -d > /opt/course/1/cert

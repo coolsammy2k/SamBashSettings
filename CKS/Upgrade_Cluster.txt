@@ -10,3 +10,61 @@ $ kubectl upgrade plan
       $ systemctl restart kubelet
 
    $ kubectl uncordon node-1
+
+
+
+The cluster is running Kubernetes 1.19.6. Update it to 1.20.1 available via apt package manager.
+
+Use ssh cluster3-master1 and ssh cluster3-worker1 to connect to the instances.
+
+
+
+Control Plane Master Components
+
+➜ k drain cluster3-master1 --ignore-daemonsets
+
+root@cluster3-master1:~# apt-get install kubeadm=1.20.1-00
+
+➜ root@cluster3-master1:~# kubeadm upgrade plan
+
+➜ root@cluster3-master1:~# kubeadm upgrade apply v1.20.1
+
+
+Control Plane kubelet and kubectl
+
+➜ root@cluster3-master1:~# apt-get update
+​
+➜ root@cluster3-master1:~# apt-get install kubelet=1.20.1-00 kubectl=1.20.1-00
+➜ k uncordon cluster3-master1
+
+
+Data Plane
+
+k drain cluster3-worker1 --ignore-daemonsets
+
+
+➜ root@cluster3-worker1:~# apt-get update
+...
+​
+➜ root@cluster3-worker1:~# apt-get install kubeadm=1.20.1-00
+
+
+➜ root@cluster3-worker1:~# kubeadm upgrade node
+
+
+➜ root@cluster3-worker1:~# apt-get install kubelet=1.20.1-00 kubectl=1.20.1-00
+
+
+➜ root@cluster3-worker1:~# systemctl daemon-reload && systemctl restart kubelet
+
+➜ k uncordon cluster3-worker1
+
+
+
+
+
+
+
+
+
+

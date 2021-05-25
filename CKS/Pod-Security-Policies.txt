@@ -136,3 +136,120 @@ spec:
 $ kubectl create role psp-access --verb=use --resource=podsecuritypolicies
 
 $ kubectl create rolebinding psp-access --role=psp-access --serviceaccount=default:default   # default namespace:default service account
+
+
+---
+
+
+
+There is Deployment docker-log-hacker in Namespace team-red which mounts /var/lib/docker as a hostPath volume on the Node where its running. This means that the Pods can for example read all Docker container logs which are running on the same Node.
+
+You're asked to forbid this behavior by:
+
+Enabling Admission Plugin PodSecurityPolicy in the apiserver
+Creating a PodSecurityPolicy named psp-mount which allows hostPath volumes only for directory /tmp
+Creating a ClusterRole named psp-mount which allows to use the new PSP
+Creating a RoleBinding named psp-mount in Namespace team-red which binds the new ClusterRole to all ServiceAccounts in the Namespace team-red
+Restart the Pod of Deployment docker-log-hacker afterwards to verify new creation is prevented.
+
+
+Enable Admission Plugin for PodSecurityPolicy
+
+   - --enable-admission-plugins=NodeRestriction,PodSecurityPolicy 
+
+
+Create new PodSecurityPolicy
+
+Next we create the new PSP with the task requirements by copying an example from the k8s docs and altering it:
+
+
+vim 4_psp.yaml
+
+# 4_psp.yaml
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: psp-mount
+spec:
+  privileged: true
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+  volumes:
+  - '*'
+  allowedHostPaths:             # task requirement
+    - pathPrefix: "/tmp"        # task requirement
+
+
+So far the PSP has no effect because we gave no RBAC permission for any Pods-ServiceAccounts to use it yet. So we do:
+
+
+k -n team-red create clusterrole psp-mount --verb=use \
+--resource=podsecuritypolicies --resource-name=psp-mount
+
+
+Which will create a ClusterRole like:
+
+
+# kubectl -n team-red create clusterrole psp-mount --verb=use --resource=podsecuritypolicies --resource-name=psp-mount
+
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: psp-mount
+rules:
+- apiGroups:
+  - policy
+  resourceNames:
+  - psp-mount
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+
+
+And for the RoleBinding:
+
+
+k -n team-red create rolebinding psp-mount --clusterrole=psp-mount --group system:serviceaccounts
+Which will create:
+
+
+# kubectl -n team-red create rolebinding psp-mount --clusterrole=psp-mount --group system:serviceaccounts
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  creationTimestamp: null
+  name: psp-mount
+  namespace: team-red
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: psp-mount
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: Group
+  name: system:serviceaccounts
+
+
+Test new PSP
+
+We restart the Deployment and check the status:
+
+
+➜ k -n team-red rollout restart deploy docker-log-hacker
+
+
+
+
+
+
+
+

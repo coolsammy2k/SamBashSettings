@@ -300,4 +300,101 @@ $ aa-genprof
 
 # Setup simple AppArmor profile for curl
 
+---
+
+
+
+
+
+Some containers need to run more secure and restricted. There is an existing AppArmor profile located at /opt/course/9/profile for this.
+
+Install the AppArmor profile on Node cluster1-worker1. Connect using ssh cluster1-worker1.
+
+Add label security=apparmor to the Node
+
+Create a Deployment named apparmor in Namespace default with:
+
+One replica of image nginx:1.19.2
+NodeSelector for security=apparmor
+Single container named c1 with the AppArmor profile enabled
+The Pod might not run properly with the profile enabled. Write the logs of the Pod into /opt/course/9/logs so another team can work on getting the application running.
+
+First we have a look at the provided profile:
+
+
+vim /opt/course/9/profile
+
+# /opt/course/9/profile 
+​
+#include <tunables/global>
+  
+profile very-secure flags=(attach_disconnected) {
+  #include <abstractions/base>
+​
+  file,
+​
+  # Deny all file writes.
+  deny /** w,
+}
+
+
+
+➜ scp /opt/course/9/profile cluster1-worker1:~/
+
+➜ root@cluster1-worker1:~# apparmor_parser -q ./profile
+
+
+Part 2
+
+We label the Node:
+
+
+k label -h # show examples
+​
+k label node cluster1-worker1 security=appa
+
+
+
+k create deploy apparmor --image=nginx:1.19.2 $do > 9_deploy.yaml
+​
+vim 9_deploy.yaml
+
+# 9_deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: apparmor
+  name: apparmor
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apparmor
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: apparmor
+      annotations:                                                                 # add
+        container.apparmor.security.beta.kubernetes.io/c1: localhost/very-secure   # add
+    spec:
+      nodeSelector:                    # add
+        security: apparmor             # add
+      containers:
+      - image: nginx:1.19.2
+        name: c1                       # change
+        resources: {}
+
+
+
+
+
+
+
+
+
 

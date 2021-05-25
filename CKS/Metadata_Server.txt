@@ -1,0 +1,46 @@
+There is a metadata service available at http://192.168.100.21:32000 on which Nodes can reach sensitive data, like cloud credentials for initialisation. By default, all Pods in the cluster also have access to this endpoint. The DevSecOps team has asked you to restrict access to this metadata server.
+
+In Namespace metadata-access:
+
+Create a NetworkPolicy named metadata-deny which prevents egress to 192.168.100.21 for all Pods but still allows access to everything else
+Create a NetworkPolicy named metadata-allow which allows Pods having label role: metadata-accessor to access endpoint 192.168.100.21
+There are existing Pods in the target Namespace with which you can test your policies, but don't change their labels.
+
+
+vim 13_metadata-deny.yaml
+
+# 13_metadata-deny.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: metadata-deny
+  namespace: metadata-access
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 192.168.100.21/32
+
+
+# merged policies into one for pods with label metadata-accessor
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to: # first rule
+    - ipBlock: # condition 1
+        cidr: 0.0.0.0/0
+        except:
+        - 192.168.100.21/32
+  - to: # second rule
+    - ipBlock: # condition 1
+        cidr: 192.168.100.21/32
+
+
+

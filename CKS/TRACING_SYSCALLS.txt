@@ -51,3 +51,32 @@ $ cd /proc/<process-id>
 you will get all the environment variables etc....
 
 $ cat environ
+
+
+
+---
+
+Secrets in ETCD
+
+cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep etcd
+
+    - --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt
+    - --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt
+    - --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key
+    - --etcd-servers=https://127.0.0.1:2379 # optional since we're on same node
+
+
+ETCDCTL_API=3 etcdctl \
+--cert /etc/kubernetes/pki/apiserver-etcd-client.crt \
+--key /etc/kubernetes/pki/apiserver-etcd-client.key \
+--cacert /etc/kubernetes/pki/etcd/ca.crt get /registry/secrets/team-green/database-access
+
+ETCD in Kubernetes stores data under /registry/{type}/{namespace}/{name}. This is how we came to look for /registry/secrets/team-green/database-access
+
+
+---
+
+
+
+
+

@@ -1,0 +1,68 @@
+The Deployment immutable-deployment in Namespace team-purple should run immutable, it's created from file /opt/course/19/immutable-deployment.yaml. Even after a successful break-in, it shouldn't be possible for an attacker to modify the filesystem of the running container.
+
+Modify the Deployment in a way that no processes inside the container can modify the local filesystem, only /tmp directoy should be writeable. Don't modify the Docker image.
+
+Save the updated YAML under /opt/course/19/immutable-deployment-new.yaml and update the running Deployment.
+
+➜ k -n team-purple edit deploy -o yaml
+
+# kubectl -n team-purple edit deploy -o yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: team-purple
+  name: immutable-deployment
+  labels:
+    app: immutable-deployment
+  ...
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: immutable-deployment
+  template:
+    metadata:
+      labels:
+        app: immutable-deployment
+    spec:
+      containers:
+      - image: busybox:1.32.0
+        command: ['sh', '-c', 'tail -f /dev/null']
+        imagePullPolicy: IfNotPresent
+        name: busybox
+      restartPolicy: Always
+... 
+
+
+# /opt/course/19/immutable-deployment-new.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: team-purple
+  name: immutable-deployment
+  labels:
+    app: immutable-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: immutable-deployment
+  template:
+    metadata:
+      labels:
+        app: immutable-deployment
+    spec:
+      containers:
+      - image: busybox:1.32.0
+        command: ['sh', '-c', 'tail -f /dev/null']
+        imagePullPolicy: IfNotPresent
+        name: busybox
+        securityContext:                  # add
+          readOnlyRootFilesystem: true    # add
+        volumeMounts:                     # add
+        - mountPath: /tmp                 # add
+          name: temp-vol                  # add
+      volumes:                            # add
+      - name: temp-vol                    # add
+        emptyDir: {}                      # add
+      restartPolicy: Always
