@@ -89,3 +89,19 @@ $ find container-filesystem/ | grep kube-apiserver
 $ sha512sum container-filesystem/usr/local/bin/kube-apiserver
 
 
+
+#Docker Image Build example
+
+FROM ubuntu
+ARG DEBIAN_FRONTEDN=noninteractive
+RUN apt-get update && apt-get install -y golang-go
+COPY app.go .
+RUN CGO_ENABLED=0 go build app.go
+
+FROM alpine:3.12.1
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup -h /home/appuser
+COPY --from=0 /app /home/appuser/
+USER appuser
+CMD ["/home/appuser/app"]
+
+

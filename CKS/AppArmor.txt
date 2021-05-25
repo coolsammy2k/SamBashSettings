@@ -283,3 +283,21 @@ spec:
     hostPath:
        path: /data/pages
        type: Directory
+
+
+---
+# Killer.sh
+
+# Update the profile if app produced some more usage logs(syslog)
+$ aa-logprof
+
+# put profile in enforce mode
+$ aa-enforce
+
+# generate a new profile (smart wrapper around aa-logprof)
+$ aa-genprof
+
+
+# Setup simple AppArmor profile for curl
+
+

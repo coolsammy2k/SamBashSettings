@@ -52,4 +52,5 @@ spec:
    60
 
 
-
+Create Pod SecurityContext to make filesystem Read-Only
+# docker run --ready-only --tmpfs /run my-container

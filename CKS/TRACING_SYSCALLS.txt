@@ -11,3 +11,43 @@ $ strace -p $(pidof etcd)
 
 
 
+$ strace
+    -o filename
+    -v verbose
+    -f follow forks
+
+    -cw (count and summarise)
+    -p pid
+    -P path
+
+
+/proc directory
+
+    Information and connections to processes and kernel
+    Study it to learn how processes work
+    configuration and administrative tasks
+    contains files that doesn't, yet you can access these
+
+$ cd /proc
+
+strace Kubernetes etcd
+
+    List syscalls
+    find open files
+    read secret value
+
+
+# Create Apache pod with a secret as environment variable, Read that secret from host filesystem
+
+$ kubectl ru apache --image=httpd -oyaml --dry-run=client > Pod.yaml
+
+# Run this on which the pod is running
+$ docker ps | grep apache
+
+$ pstree -p
+
+$ cd /proc/<process-id>
+
+you will get all the environment variables etc....
+
+$ cat environ

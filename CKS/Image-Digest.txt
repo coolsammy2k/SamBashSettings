@@ -1,0 +1,9 @@
+# List all image registries used in the whole cluster
+# Use Image digest for kube-apiserver
+
+
+$ kubectl get pod -A oyaml | grep "image:"
+
+$ kubectl get pod -A oyaml | grep "image:" | grep -v "f:"
+
+

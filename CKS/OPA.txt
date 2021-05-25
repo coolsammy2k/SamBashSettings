@@ -41,3 +41,10 @@ $ curl http://localhost:8181/v1/po1icies
 
 # OPA Policy Testing framework
 $ opa test . -v
+
+
+---
+
+# Whitelist some registries using OPA only images from docker.io and k8s.gcr.io can be used
+
+

@@ -21,6 +21,15 @@ $ trivy image --severity HIGH,CRITICAL kodekloud/webapp-delayed-start
 $ kubectl -n delta get pods -o json | jq -r '.items[].spec.containers[].image'
 
 
+# Run Trivy as Docker 
+
+$ docker run ghcr.io/aquasecurity/trivy:latest
+
+#Scan image nginx for vulnerabilities
+$ docker run ghcr.io/aquasecurity/trivy:latest image nginx
+
+
+
 # CVE : Common Vulnerabilities and Exposures 
 
 

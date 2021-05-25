@@ -28,6 +28,8 @@ $ cat /var/run/falco.pid
 $ kill -1 $(cat /var/run/falco.pid)
 
 
+$ tail -f /var/log/syslog | grep falco
+
 
 
 A pod in the sahara namespace has generated alerts that a shell was opened inside the container.

@@ -127,3 +127,12 @@ spec:
   - 'CAP_SYS_TIME'
   volumes:
   - 'persistentVolumeClaim'
+
+
+---
+
+# Give access to default service account to create pod as user
+
+$ kubectl create role psp-access --verb=use --resource=podsecuritypolicies
+
+$ kubectl create rolebinding psp-access --role=psp-access --serviceaccount=default:default   # default namespace:default service account
