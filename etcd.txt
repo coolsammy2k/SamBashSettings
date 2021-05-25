@@ -1,0 +1,61 @@
+
+#Hack Secrets in ETCD
+
+#Install ETCD Client
+
+$apt-get install etcd-client
+
+$etcdctl --version
+
+$ETCDCTL_API=3 etcdctl endpoint health
+
+$cat /etc/kubernetes/manifests/kube-apiserver.yaml | grep etcd
+
+$ETCDCTL_API=3 etcdctl --cert < > --key <>  --cacert <> endpoint health
+
+#access the created secrets (secret2)
+$ETCDCTL_API=3 etcdctl --cert < > --key <>  --cacert <> get /registry/secrets/default/secret2  
+
+
+#Encrypt ETCD esp secrets
+
+EncryptionConfiguration
+--encryption-provider-config
+
+
+apiVersion: apiserver.config.k8s.io/v1
+kind: EncryptionConfiguration
+resources:
+  - resources:
+    - secrets
+    providers:
+    - identity: {}
+    - aesgcm:
+        keys:
+        - name: key1
+          secret: c2VjcmV0IGlzIHNlY3VyZQ==
+        - name: key2
+          secret: dGhpcyBpcyBwYXNzd29yZA==
+    - aescbc:
+        keys:
+        - name: key1
+          secret: c2VjcmV0IGlzIHNlY3VyZQ==
+        - name: key2
+          secret: dGhpcyBpcyBwYXNzd29yZA==
+    - secretbox:
+        keys:
+        - name: key1
+          secret: YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY=
+
+# read secret from etcd
+ETCDCTL_API=3 etcdctl --cert /etc/kubernetes/pki/apiserver-etcd-client.crt --key /etc/kubernetes/pki/apiserver-etcd-client.key --cacert /etc/kubernetes/pki/etcd/ca.crt get /registry/secrets/default/very-secure
+
+
+#Recreate all secrets after enabling encryption in api server --encryption-provider-config
+
+$ kubectl get secret -A -oyaml | kubectl replace -f -
+
+# Test the recreation and get it using kube apiserver
+
+$ kubectl -n kube-system get secret <...> -o yaml
+

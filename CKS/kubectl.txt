@@ -66,3 +66,26 @@ uniq -c
 
 #Api Resource in groups
 kubectl api-resources --api-group apps -o wide
+
+
+
+# Verify k8s release binaries
+
+$ sha512sum < Release >
+
+$ sha512sum <Release> > compare
+
+$ cat compare | uniq
+
+
+$ docker ps | grep apiserver
+
+$ docker cp <container_id>:/ container-filesystem
+
+$ cd container-filesystem
+
+$ find container-filesystem/ | grep kube-apiserver
+
+$ sha512sum container-filesystem/usr/local/bin/kube-apiserver
+
+

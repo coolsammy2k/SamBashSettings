@@ -8,3 +8,23 @@ $ tar -xvf kube-bench_0.4.0_linux_amd64.tar.gz
 ./kube-bench --config-dir `pwd`/cfg --config `pwd`/cfg/config.yaml 
 
 
+# Killer.sh
+https://github.com/aquasecurity/kube-bench#running-inside-a-container
+
+# run on master
+docker run --pid=host -v /etc:/etc:ro -v /var:/var:ro -t aquasec/kube-bench:latest run --targets=master --version 1.21
+
+# run on worker
+docker run --pid=host -v /etc:/etc:ro -v /var:/var:ro -t aquasec/kube-bench:latest run --targets=node --version 1.21
+
+
+### OLD SYNTAX ###
+docker run --pid=host -v /etc:/etc:ro -v /var:/var:ro -t aquasec/kube-bench:latest master --version 1.21
+docker run --pid=host -v /etc:/etc:ro -v /var:/var:ro -t aquasec/kube-bench:latest node --version 1.21
+
+
+Example fixing etcd security issue
+$ stat -c %U:%G /var/lib/etcd
+
+$ useradd etcd
+solution: chown etcd:etcd /var/lib/etcd
