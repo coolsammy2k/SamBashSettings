@@ -234,6 +234,8 @@ noremap <Leader>P "+p
 "Toggle relative number
 nnoremap <Leader>n :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
 
+"Toggle Paste
+noremap <Leader>p :set pastetoggle<CR>
 
 "Change buffers short cut 
 nnoremap ]b :bnext<CR>
@@ -241,6 +243,9 @@ nnoremap [b :bprev<CR>
 
 "Open all buffers in vertical split
 nnoremap <Leader>v :vert ba<CR>
+
+"Toggle Paste
+nnoremap <Leader>p :set pastetoggle<CR>
 
 
 " Removes pipes | that act as seperators on splits
