@@ -145,3 +145,9 @@ k config view --raw -ojsonpath="{.users[2].user.client-certificate-data}" | base
 OR
 
 k config view --raw -ojsonpath="{.users[?(.name == 'restricted@infra-prod')].user.client-certificate-data}" | base64 -d > /opt/course/1/cert
+
+
+---
+# List the latest EVENTS in kubernetes cluster by timestamp
+
+➜ k -n team-red get events --sort-by='{.metadata.creationTimestamp}'

@@ -28,3 +28,15 @@ $ stat -c %U:%G /var/lib/etcd
 
 $ useradd etcd
 solution: chown etcd:etcd /var/lib/etcd
+
+
+# Run kube-bench on Master
+
+$ kube-bench master
+
+# Runn kube-bench on node
+
+$ kube-bench node
+
+We check the permission level of the kubelet config file:
+➜ stat -c %a /var/lib/kubelet/config.yaml

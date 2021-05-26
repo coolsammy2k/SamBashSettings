@@ -3,3 +3,30 @@ kind: RuntimeClass
 metadata:
     name: secure-runtime
 handler: runsc
+
+
+
+# First we ssh into the worker node and optionally check if containerd and runsc are installed and configured
+
+$ runsc --version
+
+$ service containerd status
+
+$ cat /etc/containerd/config.toml
+
+
+#Next we check the arguments of the kubelet.
+
+# defines how the kubelet is started
+vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+We see that it references file /etc/default/kubelet.
+# /etc/default/kubelet
+KUBELET_EXTRA_ARGS="--container-runtime remote --container-runtime-endpoint unix:///run/containerd/containerd.sock"
+
+
+# Exec into runsc container and check if it really uses runsc
+
+$ kubectl -n team-purple exec gvisor-test -- dmesg
+
+
