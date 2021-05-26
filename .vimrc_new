@@ -227,15 +227,12 @@ nnoremap <Leader>l :LeadingSpaceToggle<CR>
 "Set it to unnamed to use * (PRIMARY, on select)
 "Set it to unnamedplus to use + (CLIPBOARD, ^C)
 noremap <Leader>y "*y
-noremap <Leader>p "*p
+"noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
 
 "Toggle relative number
 nnoremap <Leader>n :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
-
-"Toggle Paste
-noremap <Leader>p :set pastetoggle<CR>
 
 "Change buffers short cut 
 nnoremap ]b :bnext<CR>
