@@ -4,6 +4,22 @@ metadata:
     name: secure-runtime
 handler: runsc
 
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+    name: simple-webapp-1
+    labels:
+        name: simple-webapp
+spec:
+   runtimeClassName: secure-runtime
+   containers:
+     - name: simple-webapp
+       image: kodekloud/webapp-delayed-start
+       ports:
+        - containerPort: 8080
+---
 
 
 # First we ssh into the worker node and optionally check if containerd and runsc are installed and configured

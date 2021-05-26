@@ -47,4 +47,111 @@ $ opa test . -v
 
 # Whitelist some registries using OPA only images from docker.io and k8s.gcr.io can be used
 
+---
+
+OPA In Kubernetes
+
+
+
+
+
+#ValidatingAdmissionWebhook 
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+name: opa-validating-webhook
+webhooks:
+ - name: validating-webhook.openpolicyagent.org
+   rules:
+     - operations:["CREATE","UPDATE "]
+       apiGroups: ["*"]
+       apiVersions: ["*"]
+       resources: ["*"]
+   clientConfig:
+       url: "http://opa-address:8181"
+
+---
+
+
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+name: opa-validating-webhook
+webhooks:
+ - name: validating-webhook.openpolicyagent.org
+   rules:
+     - operations:["CREATE","UPDATE "]
+       apiGroups: ["*"]
+       apiVersions: ["*"]
+       resources: ["*"]
+   clientConfig:
+      caBundle: $(cat ca.crt | base64 | tr -d '\n')
+      service:
+        namespace: opa
+        name: opa
+--
+
+# Create Configmap using rego file
+
+$ kubectl create cm rego_config_map --from-file=file_name.rego
+
+# OPA Load Policies . kubernetes.rego
+
+kind: ConfigMap
+apiVersion: v1
+metadata :
+    name: policy-unique-podname
+    namespace: opa
+    labels :
+      openpolicyagent.org/policy: rego
+data :
+  main: |
+
+    package kubernetes.admission
+
+    import data.kubernetes.pods
+
+    deny[msg]{
+      input.request.kind.kind == "Pod"
+      input_pod_name := input.request.object.metadata.name
+      other_pod_names := pods[other_ns][other_name].metadata.name
+      input_pod_name == other_pod_names
+      msg := sprintf("Podname '%v' already exists")
+    }
+
+
+$ curl -X PUT --data-binary @kubernetes.rego http://localhost:8181/v1/policies/example1
+
+
+# OPA Example in kubernetes 
+
+# untrusted-registry.rego
+
+package kubernetes.admission
+
+deny[msg] {
+    input.request.kind.kind == "Pod"
+    image := input.request.object.spec.containers[_].image
+    not startswith(image, "hooli.com/")
+    msg := sprintf("image '%v' comes from untrusted registry", [image])
+}
+
+
+# unique-host.rego
+
+import data.kubernetes.ingresses
+
+deny[msg] {
+    some other_ns, other_ingress
+    input.request.kind.kind == "Ingress"
+    input.request.operation == "CREATE"
+    host := input.request.object.spec.rules[_].host
+    ingress := ingresses[other_ns] [other_ingress]
+    other_ns != input.request.namespace
+    ingress.spec.rules[_].host == host
+    msg := sprintf("invalid ingress host %q (conflicts with %v/%v)", [host, other_ns, other_ingress])
+}
+
+
 
