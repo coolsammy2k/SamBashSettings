@@ -251,3 +251,181 @@ spec:
         cidr: 0.0.0.0/0
         except:
         - 169.254.169.254/32   # except the metadaserver
+
+
+
+---
+
+
+
+Create a default deny NetworkPolicy and then allowlist more traffic
+
+Test every of your polices.
+Create Namespace applications
+
+By default, all Pods in Namespace applications should NOT be able to have any outgoing traffic
+By default, all Pods in Namespace applications should still be able to use the Kubernetes DNS
+Pods in Namespace applications with label very=important should be able to have any outgoing traffic
+
+Incoming traffic won’t be enforced by the NetworkPolicies
+Check out https://editor.cilium.io
+
+Solution
+1. Namespace
+  alias k=kubectl
+  k create ns applications
+To test we create a Pod:
+  k -n applications run test --image=nginx
+  k -n applications exec test -- curl killer.sh # YES
+  k -n applications exec test -- sh -c "apt-get update && apt-get -y install dnsutils" # to use nslookup
+
+2. Egress Default Deny
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-egress
+  namespace: applications
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+
+And to test:
+  k -n applications exec test -- nslookup killer.sh # NO
+  ping killer.sh # get IP
+  k -n applications exec test -- curl killer.sh # NO
+  k -n applications exec test -- curl 35.227.196.29 # NO
+
+3. Allow DNS
+We can adjust the existing NP or create another one. Here we create a new one.
+apiVersion: networking.k8s.io/v1
+
+kind: NetworkPolicy
+metadata:
+  name: allow-dns
+  namespace: applications
+spec:
+  podSelector: {}
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+
+And to test:
+  k -n applications exec test -- nslookup killer.sh # YES
+  k -n applications exec test -- nslookup kubernetes.default # YES
+  k -n applications exec test -- curl killer.sh # NO
+  k -n applications exec test -- curl 35.227.196.29 # NO
+
+4. Allow all egress for some Pods
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-egress
+  namespace: applications
+spec:
+  podSelector:
+    matchLabels:
+      very: important
+  policyTypes:
+    - Egress
+  egress:
+    - to:
+      - ipBlock:
+          cidr: 0.0.0.0/0
+
+And to test:
+  k -n applications exec test -- curl killer.sh # NO
+  k -n applications label pod test very=important
+  k -n applications exec test -- curl killer.sh # YES
+
+5. Ignore ingress traffic
+Nothing to do because we didn’t specify any NPs for ingress traffic.
+
+6. NetworkPolicy editor
+https://editor.cilium.io
+
+
+
+---
+
+
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: internal-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      name: internal
+  policyTypes:
+  - Egress
+  - Ingress
+  ingress:
+    - {}
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          name: mysql
+    ports:
+    - protocol: TCP
+      port: 3306
+
+  - to:
+    - podSelector:
+        matchLabels:
+          name: payroll
+    ports:
+    - protocol: TCP
+      port: 8080
+ 
+  - ports:
+    - port: 53
+      protocol: UDP
+    - port: 53
+      protocol: TCP
+
+
+
+---
+
+A pod called redis-backend has been created in the prod-x12cs namespace. It has been exposed as a service of type ClusterIP. Using a network policy called allow-redis-access, lock down access to this pod only to the following:
+1. Any pod in the same namespace with the label backend=prod-x12cs.
+2. All pods in the prod-yx13cs namespace.
+All other incoming connections should be blocked.
+
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-redis-access
+  namespace: prod-x12cs
+spec:
+  podSelector:
+    matchLabels:
+      run: redis-backend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          access: redis
+    - podSelector:
+        matchLabels:
+          backend: prod-x12cs
+    ports:
+    - protocol: TCP
+      port: 6379
+
+
