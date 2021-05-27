@@ -1,3 +1,12 @@
+#   ____    _    __  __
+#  / ___|  / \  |  \/  |
+#  \___ \ / _ \ | |\/| |
+#   ___) / ___ \| |  | |
+#  |____/_/   \_\_|  |_|
+#  
+
+
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -138,3 +147,5 @@ export CLICOLOR=1
 
 alias k=kubectl
 export PATH="/usr/local/sbin:$PATH"
+
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh ]
