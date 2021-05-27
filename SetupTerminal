@@ -56,3 +56,22 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 $ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 $ cd ~/.fzf/
 $ ./install
+
+#Install autojump and source file in bashrc
+
+$ sudo apt install autojump
+
+#Change Visual Highlight color
+highlight Visual cterm=bold ctermbg=Red ctermfg=NONE
+
+
+# termial capture
+
+$script cks --timing=timing.log
+$scriptreplay -s cks --timing=timing.log
+
+
+$ git config --global user.name "Sam"
+$ git config --global user.email "coolsammy2k@gmail.com"
+
+
