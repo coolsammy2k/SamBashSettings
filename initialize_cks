@@ -25,6 +25,6 @@ echo 'alias k=kubectl' >> ~/.bashrc
 echo 'set -o vi' >> ~/.bashrc
 echo 'complete -F __start_kubectl k' >> ~/.bashrc
 
-echo 'export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'' >> ~/.bashrc
+echo "export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'" >> ~/.bashrc
 source ~/.bashrc
 
