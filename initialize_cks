@@ -5,6 +5,9 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf/ && cd ~/.fzf/ && ./install --all
 curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
 sudo dpkg -i ripgrep_12.1.1_amd64.deb
+
+curl -LO https://github.com/sharkdp/fd/releases/download/v8.2.1/fd_8.2.1_amd64.deb
+sudo dpkg -i fd_8.2.1_amd64.deb
 sudo apt install autojump -y
 git config --global user.name "Sam"
 git config --global user.email "coolsammy2k@gmail.com"
@@ -21,5 +24,7 @@ sed -i 's/'bobby'/atomic/g' ~/.bashrc
 echo 'alias k=kubectl' >> ~/.bashrc
 echo 'set -o vi' >> ~/.bashrc
 echo 'complete -F __start_kubectl k' >> ~/.bashrc
+
+echo 'export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'' >> ~/.bashrc
 source ~/.bashrc
 
