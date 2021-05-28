@@ -5,8 +5,13 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf/ && cd ~/.fzf/ && ./install --all
 echo && echo "[ -f ~/.fzf.bash ] && source ~/.fzf.bash" >> ~/.bashrc && source ~/.bashrc
 sudo apt install autojump -y
-echo "source /usr/share/autojump/autojump.sh" >> ~/.bashrc
+echo "source /usr/share/autojump/autojump.sh" >> ~/.bashrc && source ~/.bashrc
 git config --global user.name "Sam"
 git config --global user.email "coolsammy2k@gmail.com"
+rm -rf ~/.vimrc
+rm -rf ~/.tmux.conf
+
+ln -s ~/SamBashSettings/.vimrc_new ~/.vimrc
+ln -s ~/SamBashSettings/.tmux.conf ~/.tmux.conf
 
 
