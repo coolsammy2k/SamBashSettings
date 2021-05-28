@@ -3,7 +3,7 @@
 session=cks
 
 tmux new-session -s "$session"  -d
-
+~/.tmux/plugins/tpm/scripts/install_plugins.sh
 for i in {0..15}; do
    tmux new-window -t "$i" -n "Q$i"
 done
