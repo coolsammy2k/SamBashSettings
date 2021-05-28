@@ -3,6 +3,8 @@ sudo apt update
 sudo apt install vim-gtk -y
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf/ && cd ~/.fzf/ && ./install --all
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/12.1.1/ripgrep_12.1.1_amd64.deb
+sudo dpkg -i ripgrep_12.1.1_amd64.deb
 sudo apt install autojump -y
 git config --global user.name "Sam"
 git config --global user.email "coolsammy2k@gmail.com"
