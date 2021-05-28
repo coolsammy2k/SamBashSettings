@@ -74,4 +74,5 @@ $scriptreplay -s cks --timing=timing.log
 $ git config --global user.name "Sam"
 $ git config --global user.email "coolsammy2k@gmail.com"
 
-
+# Bash-it installation
+git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh --silent && sed -i 's/'"$BASH_IT_THEME"'/bira/g' ~/.bashrc && source ~/.bashrc
