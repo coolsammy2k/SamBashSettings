@@ -2,7 +2,7 @@
 
 session=cks
 
-tmux new-session -s "$session"  -d "sleep 1"
+tmux new-session -s "$session"  -d "sleep 3"
 sleep 0.1
 ~/.tmux/plugins/tpm/scripts/install_plugins.sh
 for i in {0..15}; do
@@ -10,3 +10,4 @@ for i in {0..15}; do
 done
 
 tmux select-window -t "$session:0"
+tmux a -t cks
