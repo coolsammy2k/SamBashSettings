@@ -12,3 +12,20 @@
 ps -aux | grep kubelet
 
 
+$ kubectl proxy
+
+
+
+$ kubectl port-forward pods/{POD_NAME} 8005:80 &
+
+OR
+
+$ kubectl port-forward deployment/{DEPLOYMEN_NAME} 8005:80 &
+
+OR
+
+$ kubectl port-forward service/{SERVICE_NAME} 8005:80 &
+
+
+
+$ kubectl port-forward replicaset/{REPLICALSET_NAME} 8005:80 &

@@ -104,7 +104,7 @@ set paste
 syntax enable
 let g:rehash256 = 1
 set ic
-
+set whichwrap+=<,>,h,l,[,]      "Vim will not move to the previous/next line after reaching first/last character in the line. This can be quite annoying for new users. Fortunately this behaviour can be easily changed by putting this in your vimrc file
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Remap Keys
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

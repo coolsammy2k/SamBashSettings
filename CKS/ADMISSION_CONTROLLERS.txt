@@ -147,3 +147,59 @@ users:
   user:
     client-certificate: /etc/kubernetes/pki/apiserver.crt
     client-key:  /etc/kubernetes/pki/apiserver.key
+
+
+
+---
+
+
+
+We need to make sure that when pods are created in this cluster, they cannot use the latest image tag, irrespective of the repository being used. 
+To achieve this, a simple Admission Webhook Server has been developed and deployed. A service called image-bouncer-webhook is exposed in the cluster internally. This Webhook server ensures that the developers of the team cannot use the latest image tag. Make use of the following specs to integrate it with the cluster using an ImagePolicyWebhook:
+	1. Create a new admission configuration file at /etc/admission-controllers/admission-configuration.yaml
+	2. The kubeconfig file with the credentials to connect to the webhook server is located at /root/CKS/ImagePolicy/admission-kubeconfig.yaml. Note: The directory /root/CKS/ImagePolicy/has already been mounted on the kube-apiserver at path /etc/admission-controllers so use this path to store the admission configuration.
+	3. Make sure that if the latest tag is used, the request must be rejected at all times.
+	4. Enable the Admission Controller.
+Finally, delete the existing pod in the magnum namespace that is in violation of the policy and recreate it, ensuring the same image but using the tag 1.27
+
+
+
+
+#Create the below admission-configuration inside /root/CKS/ImagePolicy directory in the controlplane
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- name: ImagePolicyWebhook
+  configuration:
+    imagePolicy:
+      kubeConfigFile: /etc/admission-controllers/admission-kubeconfig.yaml
+      allowTTL: 50
+      denyTTL: 50
+      retryBackoff: 500
+      defaultAllow: false
+
+#The /root/CKS/ImagePolicy is mounted at the path /etc/admission-controllers directory in the kube-apiserver. So, you can directly place the files under /root/CKS/ImagePolicy.
+#---snippet of the volume and volumeMounts (already added to apiserver config) ---#
+  containers:
+  .
+  .
+  .
+  volumeMounts:
+  - mountPath: /etc/admission-controllers
+      name: admission-controllers
+      readOnly: true
+
+  volumes:
+  - hostPath:
+      path: /root/CKS/ImagePolicy/
+      type: DirectoryOrCreate
+    name: admission-controllers
+#---------------------------------------------------------------------------------# 
+
+
+
+#Next, update the kube-apiserver command flags and add ImagePolicyWebhook to the enable-admission-plugins flag. Use the configuration file that was created in the previous step as the value of 'admission-control-config-file'. 
+#Note: Remember, this command will be run inside the kube-apiserver container, so the path must be /etc/admission-controllers/admission-configuration.yaml (mounted from /root/CKS/ImagePolicy in controlplane)
+    - --admission-control-config-file=/etc/admission-controllers/admission-configuration.yaml
+    - --enable-admission-plugins=NodeRestriction,ImagePolicyWebhook
+
