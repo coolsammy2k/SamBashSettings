@@ -1,0 +1,238 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vundle For Managing Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+call plug#begin('~/.vim/plugged')
+
+    Plug 'gmarik/Vundle.vim'                           " Vundle
+    Plug 'itchyny/lightline.vim'                       " Lightline statusbar
+    Plug 'scrooloose/nerdtree'                         " Nerdtree
+    Plug 'tiagofumo/vim-nerdtree-syntax-highlight'     " Highlighting Nerdtree
+    Plug 'ryanoasis/vim-devicons'                      " Icons for Nerdtree
+    Plug 'jreybert/vimagit'                            " Magit-like plugin for vim
+    Plug 'tpope/vim-surround'                          " Change surrounding marks
+"{{ Syntax Highlighting and Colors }}
+    Plug 'PotatoesMaster/i3-vim-syntax'                " i3 config highlighting
+    Plug 'kovetskiy/sxhkd-vim'                         " sxhkd highlighting
+    Plug 'vim-python/python-syntax'                    " Python highlighting
+
+"{{ Junegunn Choi Plugins }}
+    Plug 'junegunn/goyo.vim'                           " Distraction-free viewing
+    Plug 'junegunn/limelight.vim'                      " Hyperfocus on a range
+    Plug 'junegunn/vim-emoji'                          " Vim needs emojis!
+    Plug 'vim-airline/vim-airline'                     "Setting up my status bar
+    Plug 'vim-airline/vim-airline-themes'
+    " Plug 'airblade/vim-gitgutter'                    "Shows changes if you're working with git
+
+    "Syntax 
+    Plug 'morhetz/gruvbox'       
+    Plug 'joshdick/onedark.vim'
+    Plug 'sainnhe/edge'
+
+
+    Plug 'nathanaelkane/vim-indent-guides'
+    Plug 'yggdroot/indentline'
+
+     "SuperTab
+    Plug 'ervandew/supertab'
+
+
+    "Fuzzy Finder Plugin
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+    Plug 'airblade/vim-rooter'                        "For FZF to look for files starting the root directory of a git project
+
+    Plug 'christoomey/vim-tmux-navigator'             "Navigating between vim and tmux https://github.com/christoomey/vim-tmux-navigator
+                                                      " <ctrl-h>=> Left,
+                                                      " <ctrl-j>=> Down,
+                                                      " <ctrl-k>=> Up 
+
+call plug#end()
+
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+" filetype plugin on
+
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set path+=**					" Searches current directory recursively.
+set wildmenu					" Display all matches when tab complete.
+set wildmode=full 
+set incsearch                   " Incremental search
+set hidden                      " Needed to keep multiple buffers open
+set nobackup                    " No auto backups
+set noswapfile                  " No swap
+set t_Co=256                    " Set if term supports 256 colors.
+set number relativenumber       " Display line numbers
+"set clipboard=unnamedplus       " Copy/paste between vim and other programs.
+set paste
+syntax enable
+let g:rehash256 = 1
+set ic
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Status Line
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" The lightline.vim theme
+let g:lightline = {
+      \ 'colorscheme': 'darcula',
+      \ }
+
+" Always show statusline
+set laststatus=2
+
+" Uncomment to prevent non-normal modes showing in powerline and below powerline.
+set noshowmode
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set expandtab                   " Use spaces instead of tabs.
+set smarttab                    " Be smart using tabs ;)
+set shiftwidth=4                " One tab == four spaces.
+set tabstop=4                   " One tab == four spaces.
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => NERDTree
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Uncomment to autostart the NERDTree
+" autocmd vimenter * NERDTree
+map <C-n> :NERDTreeToggle<CR>
+let g:NERDTreeDirArrowExpandable = '►'
+let g:NERDTreeDirArrowCollapsible = '▼'
+let NERDTreeShowLineNumbers=1
+let NERDTreeShowHidden=1
+let NERDTreeMinimalUI = 1
+let g:NERDTreeWinSize=38
+
+
+" => Mouse Scrolling
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set mouse=nicr
+set mouse=a
+
+" Focus Follows-mouse for gvim 
+set mousefocus
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Splits and Tabbed Files
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set splitbelow splitright
+
+
+" Remap splits navigation to just CTRL + hjkl
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" Make adjusing split sizes a bit more friendly
+noremap <silent> <C-Left> :vertical resize +3<CR>
+noremap <silent> <C-Right> :vertical resize -3<CR>
+noremap <silent> <C-Up> :resize +3<CR>
+noremap <silent> <C-Down> :resize -3<CR>
+
+"Set Leader key timeout len to double the initial time i.e 2000 milliseconds
+set timeoutlen=2000
+
+" Change 2 split windows from vert to horiz or horiz to vert
+map <Leader>th <C-w>t<C-w>H
+map <Leader>tk <C-w>t<C-w>K
+
+" Swap vi windows
+nnoremap <Leader>x <C-w><C-x>
+
+" Ripgrep short cut
+nnoremap <Leader>r :Rg<CR>
+
+" This moves Vim to the background and switches the screen back to the terminal from which Vim was called. Running fg in the terminal moves Vim back to the foreground.
+nnoremap <leader>t :stop<CR>
+
+"Move lines up down using control key i,j,k in visual, normal mode
+
+" Normal mode
+nnoremap <S-j> :m .+1<CR>==
+nnoremap <S-k> :m .-2<CR>==
+
+
+" Visual mode
+vnoremap <S-j> :m '>+1<CR>gv=gv
+vnoremap <S-k> :m '<-2<CR>gv=gv
+
+
+"Key re-maps
+map <C-n> :Lex!<CR>
+nnoremap <Up>	:resize +2<CR>
+nnoremap <Down>	:resize -2<CR>
+nnoremap <Left>	:vertical resize -2<CR>
+nnoremap <Right> :vertical resize +2<CR>
+
+"Change buffer to next
+nnoremap <Leader>b :ls<CR>:b<Space>
+
+"Hide/Unload buffer from window
+nnoremap <Leader>u :bunload<CR>
+
+"Fuzzy Find shortcut
+nnoremap <Leader>f :FZF<CR>
+
+"Toggle IndentLinesEnable & IndentGuideLinesToggle
+nnoremap <Leader>i :IndentLinesToggle<CR>
+nnoremap <Leader>g :IndentGuidesToggle<CR>
+nnoremap <Leader>l :LeadingSpaceToggle<CR>
+
+"Copy to system clipboard keymappings
+"Set it to unnamed to use * (PRIMARY, on select)
+"Set it to unnamedplus to use + (CLIPBOARD, ^C)
+noremap <Leader>y "*y
+"noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
+
+"Toggle relative number
+nnoremap <Leader>n :exec &nu==&rnu? "se nu!" : "se rnu!"<CR>
+
+"Change buffers short cut 
+nnoremap ]b :bnext<CR>
+nnoremap [b :bprev<CR>
+
+"Open all buffers in vertical split
+nnoremap <Leader>v :vert ba<CR>
+
+"Toggle Paste
+nnoremap <Leader>p :set pastetoggle<CR>
+
+
+" Removes pipes | that act as seperators on splits
+set fillchars+=vert:\ 
+
+" Make backspace work
+set backspace=indent,eol,start
+
