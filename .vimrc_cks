@@ -168,6 +168,8 @@ map <Leader>tk <C-w>t<C-w>K
 
 " Swap vi windows
 nnoremap <Leader>x <C-w><C-x>
+nnoremap <Leader>\ <C-w>=
+nnoremap <Leader>z <C-w>\|
 
 " Ripgrep short cut
 nnoremap <Leader>r :Rg<CR>
