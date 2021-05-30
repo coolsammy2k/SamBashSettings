@@ -151,3 +151,6 @@ k config view --raw -ojsonpath="{.users[?(.name == 'restricted@infra-prod')].use
 # List the latest EVENTS in kubernetes cluster by timestamp
 
 ➜ k -n team-red get events --sort-by='{.metadata.creationTimestamp}'
+
+
+$ sudo chown $(id -u):$(id -g) kube-apiserver.yaml
