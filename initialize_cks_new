@@ -13,7 +13,7 @@ git config --global user.name "Sam"
 git config --global user.email "coolsammy2k@gmail.com"
 rm -rf ~/.vimrc
 
-ln -s ~/SamBashSettings/.vimrc_new ~/.vimrc_cks
+ln -s ~/SamBashSettings/.vimrc_cks ~/.vimr
 
 echo "source /usr/share/autojump/autojump.sh" >> ~/.bashrc 
 echo "[ -f ~/.fzf.bash ] && source ~/.fzf.bash" >> ~/.bashrc
