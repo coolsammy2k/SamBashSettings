@@ -132,7 +132,8 @@ set expandtab                   " Use spaces instead of tabs.
 set smarttab                    " Be smart using tabs ;)
 set shiftwidth=4                " One tab == four spaces.
 set tabstop=4                   " One tab == four spaces.
-
+set listchars=tab:→\ ,eol:↲     " Ctrl+v u2192 for arrow
+                                " Ctrl+v u21b2 for enter character
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -183,6 +184,8 @@ map <Leader>tk <C-w>t<C-w>K
 
 " Swap vi windows
 nnoremap <Leader>x <C-w><C-x>
+nnoremap <Leader>\ <C-w>=
+nnoremap <Leader>z <C-w>\|
 
 " Ripgrep short cut
 nnoremap <Leader>r :Rg<CR>
