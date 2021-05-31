@@ -254,3 +254,6 @@ set fillchars+=vert:\
 " Make backspace work
 set backspace=indent,eol,start
 
+let g:airline_powerline_fonts = 1
+
+let g:airline#extensions#tabline#enabled = 1

@@ -241,3 +241,8 @@ set fillchars+=vert:\
 set backspace=indent,eol,start
 colorscheme edge
 set background=dark
+
+
+let g:airline_powerline_fonts = 1
+
+let g:airline#extensions#tabline#enabled = 1

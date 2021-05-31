@@ -76,3 +76,14 @@ $ git config --global user.email "coolsammy2k@gmail.com"
 
 # Bash-it installation
 git clone --depth=1 https://github.com/Bash-it/bash-it.git ~/.bash_it && ~/.bash_it/install.sh --silent && sed -i 's/'"$BASH_IT_THEME"'/bira/g' ~/.bashrc && source ~/.bashrc
+
+
+# clone & install powerline fonts
+git clone https://github.com/powerline/fonts.git --depth=1 && cd fonts && ./install.sh && cd .. && rm -rf fonts
+
+# add to .vimrc
+let g:airline_powerline_fonts = 1
+
+#vim-airline has a very cool feature to show the buffer details in tab line. To enable it you need to add this line to your .vimrc file
+
+let g:airline#extensions#tabline#enabled = 1
