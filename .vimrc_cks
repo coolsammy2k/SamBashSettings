@@ -65,7 +65,7 @@ call plug#begin('~/.vim/plugged')
 call plug#end()
 
 filetype plugin indent on    " required
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:> foldmethod=indent nofoldenable
+#autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=0# indentkeys-=<:> foldmethod=indent nofoldenable
 
 " To ignore plugin indent changes, instead use:
 " filetype plugin on
@@ -118,7 +118,7 @@ set expandtab                   " Use spaces instead of tabs.
 set smarttab                    " Be smart using tabs ;)
 set shiftwidth=4                " One tab == four spaces.
 set tabstop=4                   " One tab == four spaces.
-set listchars=tab:→\ ,eol:↲     " Ctrl+v u2192 for arrow
+#set listchars=tab:→\ ,eol:↲     " Ctrl+v u2192 for arrow
                                 " Ctrl+v u21b2 for enter character
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => NERDTree
