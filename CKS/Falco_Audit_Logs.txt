@@ -195,3 +195,24 @@ VolumeMounts ----
     name: audit-log
 ---
 
+
+This works
+
+ volumes:
+  - hostPath:
+      path: /etc/kubernetes/prod-audit.yaml
+      type: File
+    name: audit-policy
+  - hostPath:
+      path: /var/log/prod-secrets.log
+      type: FileOrCreate
+    name: audit-logs
+
+
+   volumeMounts:
+    - mountPath: /etc/kubernetes/prod-audit.yaml
+      name: audit-policy
+      readOnly: true
+    - mountPath: /var/log/prod-secrets.log
+      name: audit-logs
+      readOnly: false
