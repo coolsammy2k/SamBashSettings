@@ -240,3 +240,4 @@ set fillchars+=vert:\
 " Make backspace work
 set backspace=indent,eol,start
 colorscheme edge
+set background=dark
