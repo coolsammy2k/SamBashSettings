@@ -54,3 +54,8 @@ spec:
 
 Create Pod SecurityContext to make filesystem Read-Only
 # docker run --ready-only --tmpfs /run my-container
+
+---
+
+Pod solaris is immutable as it have readOnlyRootFilesystem: true so it should not be deleted.
+Pod sonata is running with privileged: true and triton doesn't define readOnlyRootFilesystem: true so both break the concept of immutability and should be deleted.
