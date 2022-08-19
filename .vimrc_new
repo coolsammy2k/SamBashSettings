@@ -23,8 +23,9 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle For Managing Plugins
+" => Vim Plug For Managing Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 
 call plug#begin('~/.vim/plugged')
 
@@ -72,6 +73,9 @@ call plug#begin('~/.vim/plugged')
                                                       " <ctrl-j>=> Down,
                                                       " <ctrl-k>=> Up 
 
+    "Plug 'valloric/youcompleteme'                     "YOUCOMPLETEME: A CODE-COMPLETION ENGINE FOR VIM
+    Plug 'bling/vim-bufferline'         
+    Plug 'xolox/vim-misc'                             "MISCELLANEOUS AUTO-LOAD VIM SCRIPTS											  
 call plug#end()
 
 filetype plugin indent on    " required

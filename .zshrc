@@ -94,7 +94,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git)
-plugins=( git docker zsh-syntax-highlighting zsh-autosuggestions fzf )
+plugins=( git kubectl copyfile sudo docker zsh-syntax-highlighting zsh-autosuggestions fzf vscode copypath copyfile copybuffer dirhistory jsontools macos web-search dirhistory zsh-interactive-cd vundle)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -149,3 +149,25 @@ alias k=kubectl
 export PATH="/usr/local/sbin:$PATH"
 
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh ]
+
+eval "$(jump shell)"
+eval "$(mcfly init zsh)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
+# Edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/sam/workspace/UCH/backend/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/sam/workspace/UCH/backend/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/sam/workspace/UCH/backend/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/sam/workspace/UCH/backend/node_modules/tabtab/.completions/sls.zsh
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /Users/sam/workspace/UCH/backend/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/sam/workspace/UCH/backend/node_modules/tabtab/.completions/slss.zsh
