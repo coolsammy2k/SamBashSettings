@@ -155,9 +155,12 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @yank_action 'copy-pipe-no-clear'
 set -g @plugin 'tmux-plugins/tmux-sidebar'
 
+set -g @plugin 'egel/tmux-gruvbox'
+set -g @tmux-gruvbox 'dark' # or 'light'
+
 
 # Source .tmux.conf as suggested in `man tmux`
-bind R source-file '~/.tmux.conf'
+bind R source-file '.tmux.conf'
 
 set -g @continuum-save-interval '5'
 set -g @continuum-restore 'on'
