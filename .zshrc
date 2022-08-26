@@ -171,3 +171,7 @@ bindkey '^e' edit-command-line
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
 [[ -f /Users/sam/workspace/UCH/backend/node_modules/tabtab/.completions/slss.zsh ]] && . /Users/sam/workspace/UCH/backend/node_modules/tabtab/.completions/slss.zsh
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
+
+alias vim = "/opt/homebrew/bin/vim"

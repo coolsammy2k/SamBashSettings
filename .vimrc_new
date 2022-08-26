@@ -58,7 +58,7 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'nathanaelkane/vim-indent-guides'
     Plug 'yggdroot/indentline'
-
+    Plug 'lukas-reineke/indent-blankline.nvim'
      "SuperTab
     Plug 'ervandew/supertab'
 
@@ -119,9 +119,9 @@ set whichwrap+=<,>,h,l,[,]      "Vim will not move to the previous/next line aft
 " => Status Line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " The lightline.vim theme
-let g:lightline = {
-      \ 'colorscheme': 'darcula',
-      \ }
+"let g:lightline = {
+      "\ 'colorscheme': 'darcula',
+      "\ }
 
 " Always show statusline
 set laststatus=2
@@ -236,6 +236,7 @@ nnoremap <Leader>i :IndentLinesToggle<CR>
 nnoremap <Leader>g :IndentGuidesToggle<CR>
 nnoremap <Leader>l :LeadingSpaceToggle<CR>
 
+
 "Copy to system clipboard keymappings
 "Set it to unnamed to use * (PRIMARY, on select)
 "Set it to unnamedplus to use + (CLIPBOARD, ^C)
@@ -267,3 +268,6 @@ set backspace=indent,eol,start
 let g:airline_powerline_fonts = 1
 
 let g:airline#extensions#tabline#enabled = 1
+
+set cursorline
+set cursorcolumn 

@@ -126,14 +126,15 @@ bind -n M-Right select-pane -R
 bind -n M-Up select-pane -U
 bind -n M-Down select-pane -D
 
-bind-key -n F2 new-window
-bind-key -n F3 previous-window
-bind-key -n F4 next-window
-bind-key -n F5 split-window -v
-bind-key -n F6 split-window -h
+# Short cut keys for quick actions
+bind-key -n F2 new-window            # Create a new window
+bind-key -n F3 previous-window       # Go to Previious Window
+bind-key -n F4 next-window           # Go to Next Window
+bind-key -n F5 split-window -v       # F5 Split Window Vertically
+bind-key -n F6 split-window -h       # F6 Split Window Horizontally
 bind-key -n F8 command-prompt -I "#W" "rename-window '%%'"
 bind-key -n F7 command-prompt "find-window '%%'"
-bind-key -n F10 setw synchronize-panes
+bind-key -n F10 setw synchronize-panes             # Synchronize all the panes, one command can be executed in all panes
 bind-key -n F11 resize-pane -Z
 bind-key -n F12 kill-pane
 
@@ -146,17 +147,24 @@ bind-key -n S-Down resize-pane -D
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
+#set -g @plugin 'tmux-plugins/tmux-resurrect'             # Restore and Save Tmux sessions on every restart
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'christoomey/vim-tmux-navigator'
 #set -g @plugin 'jimeh/tmux-themepack'
 #set -g @plugin 'wfxr/tmux-power'
 set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @yank_action 'copy-pipe-no-clear'
-set -g @plugin 'tmux-plugins/tmux-sidebar'
+set -g @plugin 'tmux-plugins/tmux-sidebar'                # Activate Side bar by <prefix> + TAB
 
-set -g @plugin 'egel/tmux-gruvbox'
-set -g @tmux-gruvbox 'dark' # or 'light'
+#set -g @plugin 'MunifTanjim/tmux-mode-indicator'          # Tmux Mode indicator
+
+# set -g @plugin 'egel/tmux-gruvbox'
+# set -g @tmux-gruvbox 'dark' # or 'light'
+set -g @plugin 'jaclu/tmux-menus'
+
+set -g @plugin 'dracula/tmux'
+set -g @dracula-show-powerline true
+
 
 
 # Source .tmux.conf as suggested in `man tmux`
