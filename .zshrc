@@ -174,4 +174,4 @@ bindkey '^e' edit-command-line
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=244'
 
-alias vim = "/opt/homebrew/bin/vim"
+#alias vim = "/opt/homebrew/bin/vim"

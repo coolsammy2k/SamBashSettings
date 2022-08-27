@@ -1,10 +1,13 @@
-"  ____ _____ 
-" |  _ \_   _|  Derek Taylor (DistroTube)
-" | | | || |    http://www.youtube.com/c/DistroTube
-" | |_| || |    http://www.gitlab.com/dwt1/
-" |____/ |_|
-"        
-" A customized init.vim for neovim (https://neovim.io/)     
+
+" ____
+"/ ___|  __ _ _ __ ___  _ __ ___  _   _
+"\___ \ / _` | '_ ` _ \| '_ ` _ \| | | |
+" ___) | (_| | | | | | | | | | | | |_| |
+"|____/ \__,_|_| |_| |_|_| |_| |_|\__, |
+"                                 |___/
+"
+"
+
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -48,7 +51,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'junegunn/vim-emoji'                          " Vim needs emojis!
     Plug 'vim-airline/vim-airline'                     "Setting up my status bar
     Plug 'vim-airline/vim-airline-themes'
-    " Plug 'airblade/vim-gitgutter'                    "Shows changes if you're working with git
+    Plug 'airblade/vim-gitgutter'                    "Shows changes if you're working with git
 
     "Syntax 
     Plug 'morhetz/gruvbox'       
@@ -73,7 +76,7 @@ call plug#begin('~/.vim/plugged')
                                                       " <ctrl-j>=> Down,
                                                       " <ctrl-k>=> Up 
 
-    "Plug 'valloric/youcompleteme'                     "YOUCOMPLETEME: A CODE-COMPLETION ENGINE FOR VIM
+    Plug 'valloric/youcompleteme'                     "YOUCOMPLETEME: A CODE-COMPLETION ENGINE FOR VIM
     Plug 'bling/vim-bufferline'         
     Plug 'xolox/vim-misc'                             "MISCELLANEOUS AUTO-LOAD VIM SCRIPTS											  
 call plug#end()
@@ -103,7 +106,7 @@ set nobackup                    " No auto backups
 set noswapfile                  " No swap
 set t_Co=256                    " Set if term supports 256 colors.
 set number relativenumber       " Display line numbers
-"set clipboard=unnamedplus       " Copy/paste between vim and other programs.
+set clipboard=unnamedplus       " Copy/paste between vim and other programs.
 set paste
 syntax enable
 let g:rehash256 = 1
@@ -201,7 +204,7 @@ nnoremap <Leader>z <C-w>\|
 nnoremap <Leader>r :Rg<CR>
 
 " This moves Vim to the background and switches the screen back to the terminal from which Vim was called. Running fg in the terminal moves Vim back to the foreground.
-nnoremap <leader>t :stop<CR>
+"nnoremap <leader>t :stop<CR>          " Use :term command instead 
 
 "Move lines up down using control key i,j,k in visual, normal mode
 
@@ -241,7 +244,7 @@ nnoremap <Leader>l :LeadingSpaceToggle<CR>
 "Set it to unnamed to use * (PRIMARY, on select)
 "Set it to unnamedplus to use + (CLIPBOARD, ^C)
 noremap <Leader>y "*y
-"noremap <Leader>p "*p
+noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
 
@@ -265,9 +268,13 @@ set fillchars+=vert:\
 " Make backspace work
 set backspace=indent,eol,start
 
-let g:airline_powerline_fonts = 1
 
-let g:airline#extensions#tabline#enabled = 1
+"let g:airline_powerline_fonts = 1
+
+
+"let g:airline#extensions#tabline#enabled = 1
 
 set cursorline
+highlight Cursorline cterm=bold ctermbg=grey
 set cursorcolumn 
+colorscheme molokai
