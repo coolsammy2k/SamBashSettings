@@ -79,6 +79,15 @@ call plug#begin('~/.vim/plugged')
     Plug 'valloric/youcompleteme'                     "YOUCOMPLETEME: A CODE-COMPLETION ENGINE FOR VIM
     Plug 'bling/vim-bufferline'         
     Plug 'xolox/vim-misc'                             "MISCELLANEOUS AUTO-LOAD VIM SCRIPTS											  
+    
+    " Automatically clear search highlights after you move your cursor
+    Plug 'haya14busa/is.vim' 
+
+
+	" Modify * to also work with visual selections.
+	Plug 'nelstrom/vim-visual-star-search'
+
+
 call plug#end()
 
 filetype plugin indent on    " required
@@ -201,7 +210,23 @@ nnoremap <Leader>\ <C-w>=
 nnoremap <Leader>z <C-w>\|
 
 " Ripgrep short cut
-nnoremap <Leader>r :Rg<CR>
+nnoremap <Leader>rg :Rg<CR>
+
+" Press * to search for the term under the cursor or a visual selection and
+" then press a key below to replace all instances of it in the current file.
+nnoremap <Leader>r :%s///g<Left><Left>
+nnoremap <Leader>rc :%s///gc<Left><Left><Left>
+
+" The same as above but instead of acting on the whole file it will be
+" restricted to the previously visually selected range. You can do that by
+" pressing *, visually selecting the range you want it to apply to and then
+" press a key below to replace all instances of it in the current selection.
+xnoremap <Leader>r :s///g<Left><Left>
+xnoremap <Leader>rc :s///gc<Left><Left><Left>
+
+
+" Cycle through splits.
+nnoremap <S-Tab> <C-w>w
 
 " This moves Vim to the background and switches the screen back to the terminal from which Vim was called. Running fg in the terminal moves Vim back to the foreground.
 "nnoremap <leader>t :stop<CR>          " Use :term command instead 
