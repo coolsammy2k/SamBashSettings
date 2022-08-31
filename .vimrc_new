@@ -76,7 +76,6 @@ call plug#begin('~/.vim/plugged')
                                                       " <ctrl-j>=> Down,
                                                       " <ctrl-k>=> Up 
 
-    Plug 'valloric/youcompleteme'                     "YOUCOMPLETEME: A CODE-COMPLETION ENGINE FOR VIM
     Plug 'bling/vim-bufferline'         
     Plug 'xolox/vim-misc'                             "MISCELLANEOUS AUTO-LOAD VIM SCRIPTS											  
     
