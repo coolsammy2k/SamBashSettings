@@ -162,9 +162,12 @@ set -g @plugin 'tmux-plugins/tmux-sidebar'                # Activate Side bar by
 # set -g @tmux-gruvbox 'dark' # or 'light'
 set -g @plugin 'jaclu/tmux-menus'
 
-set -g @plugin 'dracula/tmux'
-set -g @dracula-show-powerline true
+## For Dracula Theme
+#set -g @plugin 'dracula/tmux'
+#set -g @dracula-show-powerline true
 
+## For Nord theme
+set -g @plugin "arcticicestudio/nord-tmux"
 
 
 # Source .tmux.conf as suggested in `man tmux`
@@ -172,4 +175,29 @@ bind R source-file '.tmux.conf'
 
 set -g @continuum-save-interval '5'
 set -g @continuum-restore 'on'
+
+#Hide and show Tmux status line with ctl+b+s
+bind s set-option -g status
+bind C-s set-option -g status
+
+# Plugin that highlights when you press tmux prefix key
+set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
+
+#Plugin for opening highlighted selection directly from Tmux copy mode.
+#o - "open" a highlighted selection with the system default program. open for OS X or xdg-open for Linux.
+#Ctrl-o - open a highlighted selection with the $EDITOR
+#Shift-s - search the highlighted selection directly inside a search engine (defaults to google).
+set -g @plugin 'tmux-plugins/tmux-open'
+
+# https://github.com/tmux-plugins/tmux-copycat
+# Search
+# prefix + / - regex search (strings work too)
+# prefix + ctrl-f - simple file search
+
+set -g @plugin 'tmux-plugins/tmux-copycat'
+
+bind-key -t vi-copy 'v' begin-selection
+bind-key -t vi-copy 'y' copy-selection
+
+
 run '~/.tmux/plugins/tpm/tpm'
