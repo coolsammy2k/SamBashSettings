@@ -196,8 +196,9 @@ set -g @plugin 'tmux-plugins/tmux-open'
 
 set -g @plugin 'tmux-plugins/tmux-copycat'
 
-bind-key -t vi-copy 'v' begin-selection
-bind-key -t vi-copy 'y' copy-selection
+#bind-key -t vi-copy 'v' begin-selection
+#bind-key -t vi-copy 'y' copy-selection
 
+set -g @plugin 'wfxr/tmux-fzf-url'
 
 run '~/.tmux/plugins/tpm/tpm'

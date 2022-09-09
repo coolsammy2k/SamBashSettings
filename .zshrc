@@ -96,7 +96,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git)
-plugins=( git kubectl copyfile sudo docker zsh-syntax-highlighting zsh-autosuggestions fzf vscode copypath copyfile copybuffer dirhistory jsontools macos web-search dirhistory zsh-interactive-cd vagrant-prompt helm fig)
+plugins=( git kubectl copyfile sudo docker zsh-syntax-highlighting zsh-autosuggestions fzf vscode copypath copyfile copybuffer dirhistory jsontools macos web-search dirhistory zsh-interactive-cd vagrant-prompt helm fig systemadmin)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -184,11 +184,13 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_FIND_NO_DUPS
 setopt HIST_SAVE_NO_DUPS
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
-
 
 # ctrl + e will open the VI editor
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
+
+bindkey '^L' clear-screen
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
