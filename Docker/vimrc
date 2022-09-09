@@ -1,4 +1,3 @@
-
 " ____
 "/ ___|  __ _ _ __ ___  _ __ ___  _   _
 "\___ \ / _` | '_ ` _ \| '_ ` _ \| | | |
@@ -134,10 +133,6 @@ set whichwrap+=<,>,h,l,[,]      "Vim will not move to the previous/next line aft
       "\ 'colorscheme': 'darcula',
       "\ }
 
-"Change Leader Key to Spacebar
-
-let mapleader = "\<space>"
-
 " Always show statusline
 set laststatus=2
 
@@ -190,16 +185,6 @@ nnoremap <C-l> <C-w>l
 
 "Set highlight Search
 set hlsearch
-
-"Delete buffers
-nmap <leader>Q :bufdo bdelete<CR>
-
-" Allow fg to open non-existent files
-map gf :edit <cfile><CR>
-
-" Reselect visual selection after indenting
-vnoremap < <gv
-vnoremap > >gv
 
 "press return to temporarily get out of the highlighted search.
 nnoremap <CR> :nohlsearch<CR><CR>
@@ -269,18 +254,8 @@ nnoremap <Leader>b :ls<CR>:b<Space>
 "Hide/Unload buffer from window
 nnoremap <Leader>u :bunload<CR>
 
-
-"cusotmize the Files command to use rg which respects .gitignore files
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#run(fzf#wrap('files',fzf#vim#with_preview({'dir': <q-args>, 'sink': 'e', 'source': 'rg --files --hidden'}), <bang>0))
-
-" Add an AllFiles variation that ignores .gitignore files
-command! -bang -nargs=? -complete=dir AllFiles
-    \ call fzf#run(fzf#wrap('allfiles', fzf#vim#with_preview({'dir': <q-args>, 'sink': 'e', 'source': 'rg --files --hidden --no-ignore'}), <bang>0))
-
 "Fuzzy Find shortcut
-nnoremap <Leader>f :files<CR>
-nmap <Leader>F :AllFiles<CR>
+nnoremap <Leader>f :FZF<CR>
 
 "Toggle IndentLinesEnable & IndentGuideLinesToggle
 nnoremap <Leader>i :IndentLinesToggle<CR>
@@ -310,8 +285,9 @@ nnoremap <Leader>v :vert ba<CR>
 nnoremap <Leader>p :set pastetoggle<CR>
 
 
-"Floatterm Open a Terminal in a window
-nnoremap <Leader>t :FloatermNew<CR>
+"Folatterm
+
+nnoremap <Leader>t :FolatermNew<CR>
 
 " Removes pipes | that act as seperators on splits
 set fillchars+=vert:\ 
@@ -320,7 +296,7 @@ set fillchars+=vert:\
 set backspace=indent,eol,start
 
 set scrolloff=8
-set sidescrolloff=8
+set sidescrolloff=40
 
 set cursorline
 highlight Cursorline cterm=bold ctermbg=grey
