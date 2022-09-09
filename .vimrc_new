@@ -136,7 +136,7 @@ set whichwrap+=<,>,h,l,[,]      "Vim will not move to the previous/next line aft
 
 "Change Leader Key to Spacebar
 
-let mapleader = "\<space>"
+"let mapleader = "\<space>"
 
 " Always show statusline
 set laststatus=2
@@ -279,7 +279,7 @@ command! -bang -nargs=? -complete=dir AllFiles
     \ call fzf#run(fzf#wrap('allfiles', fzf#vim#with_preview({'dir': <q-args>, 'sink': 'e', 'source': 'rg --files --hidden --no-ignore'}), <bang>0))
 
 "Fuzzy Find shortcut
-nnoremap <Leader>f :files<CR>
+nnoremap <Leader>f :FZF<CR>
 nmap <Leader>F :AllFiles<CR>
 
 "Toggle IndentLinesEnable & IndentGuideLinesToggle
