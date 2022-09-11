@@ -386,3 +386,7 @@ let g:airline#extensions#fzf#enabled = 1
   let g:airline_symbols.linenr = ' :'
   let g:airline_symbols.maxlinenr = '☰ '
   let g:airline_symbols.dirty='⚡'
+
+" Toggle the Floaterm terminal
+let g:floaterm_keymap_toggle = '<leader>d'
+
