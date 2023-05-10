@@ -1,0 +1,3 @@
+# Execute these commands on the worker node where the POD will be located
+mkdir -p /data/volumes/pv1
+chmode 777 /data/volumes/pv1
