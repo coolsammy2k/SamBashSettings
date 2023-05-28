@@ -193,6 +193,12 @@ bindkey -M vicmd v edit-command-line
 bindkey '^L' clear-screen
 
 
+export RUNNER=i-0e0f54a228f880751
+export GITLAB=i-0d0657cd0a161d85b
+export DEV_MACHINE=i-0c4f0ffb8e3d5fa86
+
+export OPENAI_API_KEY=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
+
 # Setting for the new UTF-8 terminal support in Lion
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -205,3 +211,4 @@ export LANGUAGE="en_US.UTF-8"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && . "$HOME/.fig/shell/zshrc.post.zsh"
+export PATH=/Users/sam/.nvm/versions/node/v14.7.0/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Users/sam/.fzf/bin:/Users/sam/.krew/bin
