@@ -201,4 +201,14 @@ set -g @plugin 'tmux-plugins/tmux-copycat'
 
 set -g @plugin 'wfxr/tmux-fzf-url'
 
+
+# Tmux Logging
+set -g @plugin 'tmux-plugins/tmux-logging'
+
+# clone the repo by 
+# sudo git clone https://github.com/tmux-plugins/tmux-logging /opt/tmux-logging
+# To start the logging prefix + shift + p
+
+run-shell /opt/tmux-logging/logging.tmux
+
 run '~/.tmux/plugins/tpm/tpm'
