@@ -70,6 +70,11 @@ setw -g mode-keys vi
 bind-key -T copy-mode v send -X begin-selection
 bind-key -T copy-mode y send -X copy-selection
 
+# move x clipboard into tmux paste buffer
+bind C-p run "tmux set-buffer \"$(xclip -o)\"; tmux paste-buffer"
+# move tmux copy buffer into x clipboard
+bind C-y run "tmux save-buffer - | xclip -i"
+
 # make Prefix p paste the buffer.
 unbind p
 bind p paste-buffer
