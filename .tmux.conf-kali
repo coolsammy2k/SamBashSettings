@@ -1,0 +1,62 @@
+
+
+set -g history-limit 100000
+set -g allow-rename off
+set -g status-bg colour27
+set -g status-fg white
+
+bind-key j command-prompt -p "Join pane from:" "join-pane -s '%%'"
+
+bind-key s command-prompt -p "Send pane to:" "join-pane -t '%%'"
+
+set-window-option -g mode-keys vi
+# Source the .tmux.conf with prefix + r
+unbind r
+bind r source-file ~/.tmux.conf
+
+# Set mouse on
+set -g mouse off
+
+# Vim like movement in tmux panes
+bind-key h select-pane -L
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key l select-pane -R
+
+###########################
+# Colors
+###########################
+
+# color status bar
+set -g status-style fg=white,bg=colour235
+# color of message bar
+set -g message-style fg=white,bold,bg=green
+
+# highlight current window
+setw -g window-status-style fg=cyan,bg=colour235
+setw -g window-status-current-style fg=white,bold,bg=red
+
+# set color of active pane
+set -g pane-border-style fg=colour240,bg=black
+set -g pane-active-border-style fg=green,bg=black
+
+
+
+
+
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-logging'
+# Make navigation between tmux and vim panes seamlessly
+set -g @plugin 'christoomey/vim-tmux-navigator'
+
+#copy paste plugin
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+run-shell /opt/tmux-logging/logging.tmux
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
+
